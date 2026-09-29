@@ -1,0 +1,11 @@
+{
+  "name": "fieldtrip-cost-manager",
+  "version": "1.0.0",
+  "description": "현장체험학습 비용 관리",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "serve": "python -m http.server 8000",
+    "test": "node --test tests/*.test.mjs"
+  }
+}

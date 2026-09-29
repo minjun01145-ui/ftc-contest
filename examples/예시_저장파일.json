@@ -1,0 +1,448 @@
+{
+  "school": {
+    "name": "예시중학교",
+    "level": "중",
+    "establishment": "공립"
+  },
+  "projects": [
+    {
+      "id": "project-5a98d5a5-d112-42f0-ade0-9993229648fd",
+      "title": "2학년 수학여행(예시)",
+      "grade": 2,
+      "executionMode": "숙박형",
+      "startDate": "2026-05-13",
+      "endDate": "2026-05-15",
+      "tripSchedule": {
+        "items": [
+          {
+            "id": "schedule-e9cd75b5-180b-48a6-a7e6-d88d058f45fa",
+            "date": "2026-05-13",
+            "place": "부산",
+            "name": "학교 정문 출발",
+            "arrivalTime": "07:00",
+            "departureTime": "07:20",
+            "contact": "인원 점검"
+          },
+          {
+            "id": "schedule-2a0c17cb-64a6-4f7b-b223-26a3ff43b116",
+            "date": "2026-05-13",
+            "place": "부산",
+            "name": "이동(휴게소 1회)",
+            "arrivalTime": "07:20",
+            "departureTime": "11:30",
+            "contact": ""
+          },
+          {
+            "id": "schedule-587e5fa1-8440-4203-8f80-88e6197c694d",
+            "date": "2026-05-13",
+            "place": "서울",
+            "name": "놀이공원 체험 (중식·석식 포함)",
+            "arrivalTime": "12:00",
+            "departureTime": "19:30",
+            "contact": "중식, 석식: 놀이공원 식당 쿠폰"
+          },
+          {
+            "id": "schedule-5b8a9289-b8db-4e3a-b7b9-dc5711da3316",
+            "date": "2026-05-13",
+            "place": "서울",
+            "name": "숙소 도착 및 방 배정",
+            "arrivalTime": "20:30",
+            "departureTime": "",
+            "contact": ""
+          },
+          {
+            "id": "schedule-4c935f19-0dda-4957-93b4-4a5459279ea1",
+            "date": "2026-05-14",
+            "place": "서울",
+            "name": "조식 후 숙소 출발",
+            "arrivalTime": "07:00",
+            "departureTime": "08:30",
+            "contact": "조식: 숙소식"
+          },
+          {
+            "id": "schedule-e9896f23-5970-4145-949e-93837b26758b",
+            "date": "2026-05-14",
+            "place": "서울",
+            "name": "뮤지컬 관람",
+            "arrivalTime": "09:30",
+            "departureTime": "11:00",
+            "contact": ""
+          },
+          {
+            "id": "schedule-0f7bfab3-23f2-467b-8098-fbf8409470cb",
+            "date": "2026-05-14",
+            "place": "서울",
+            "name": "전통시장 투어 (중식 포함)",
+            "arrivalTime": "11:30",
+            "departureTime": "13:00",
+            "contact": "중식: 현지식"
+          },
+          {
+            "id": "schedule-f65b4327-14b1-4caf-b922-a3be7f6b13f2",
+            "date": "2026-05-14",
+            "place": "서울",
+            "name": "국립박물관 관람",
+            "arrivalTime": "14:00",
+            "departureTime": "16:00",
+            "contact": ""
+          },
+          {
+            "id": "schedule-c3f61b80-6f52-4b8d-b893-bd3df1214c83",
+            "date": "2026-05-14",
+            "place": "서울",
+            "name": "숙소 석식",
+            "arrivalTime": "18:00",
+            "departureTime": "19:30",
+            "contact": "석식: 숙소식"
+          },
+          {
+            "id": "schedule-f02bd244-bc50-4216-9c07-adec2470e674",
+            "date": "2026-05-15",
+            "place": "서울",
+            "name": "조식 후 숙소 출발",
+            "arrivalTime": "07:00",
+            "departureTime": "08:30",
+            "contact": "조식: 숙소식"
+          },
+          {
+            "id": "schedule-4d9df202-553e-4fd8-beba-dff77956ddab",
+            "date": "2026-05-15",
+            "place": "서울",
+            "name": "고궁 관람",
+            "arrivalTime": "09:00",
+            "departureTime": "11:00",
+            "contact": ""
+          },
+          {
+            "id": "schedule-22d50c9a-694f-420d-9d53-31844ae2106a",
+            "date": "2026-05-15",
+            "place": "경기",
+            "name": "중식(휴게소)",
+            "arrivalTime": "12:00",
+            "departureTime": "13:00",
+            "contact": "중식: 현지식"
+          },
+          {
+            "id": "schedule-84ade2c3-cdd3-4381-928f-ace17ebba11c",
+            "date": "2026-05-15",
+            "place": "부산",
+            "name": "학교 도착 및 해산",
+            "arrivalTime": "",
+            "departureTime": "17:30",
+            "contact": ""
+          }
+        ],
+        "importedFrom": null
+      },
+      "fixedCosts": [
+        {
+          "id": "bus",
+          "builtin": "bus",
+          "label": "버스비",
+          "mode": "total",
+          "amount": 12000000,
+          "includeChaperones": true,
+          "roundTo10": true,
+          "sharedPeople": 0,
+          "sharedNote": "",
+          "sharedProjectIds": [],
+          "sharedTitles": [],
+          "commonCost": true,
+          "removed": false,
+          "memo": "4대"
+        },
+        {
+          "id": "lodging",
+          "builtin": "lodging",
+          "label": "숙소비",
+          "mode": "total",
+          "amount": 11000000,
+          "includeChaperones": false,
+          "roundTo10": true,
+          "sharedPeople": 0,
+          "sharedNote": "",
+          "sharedProjectIds": [],
+          "sharedTitles": [],
+          "commonCost": true,
+          "removed": false,
+          "memo": "2박"
+        },
+        {
+          "id": "insurance",
+          "builtin": "insurance",
+          "label": "보험비",
+          "mode": "perPerson",
+          "amount": 2000,
+          "includeChaperones": false,
+          "roundTo10": true,
+          "sharedPeople": 0,
+          "sharedNote": "",
+          "sharedProjectIds": [],
+          "sharedTitles": [],
+          "commonCost": false,
+          "removed": false,
+          "memo": ""
+        }
+      ],
+      "dayAbsentSharesCommonCost": true,
+      "totalStudents": 150,
+      "attendance": {
+        "applicants": 142,
+        "vulnerableApplicants": 18,
+        "regularDayAbsent": 1,
+        "vulnerableDayAbsent": 0,
+        "chaperones": 8
+      },
+      "educationSupport": {
+        "regularPerPerson": 220000,
+        "vulnerableMode": "full",
+        "vulnerablePerPerson": 0,
+        "grantTotal": 32040000,
+        "memos": {
+          "regular": "",
+          "vulnerable": "",
+          "grant": ""
+        }
+      },
+      "otherSupports": [
+        {
+          "id": "sample-school",
+          "name": "학교 자체지원금",
+          "source": "school",
+          "mode": "perPerson",
+          "amount": 20000,
+          "memo": ""
+        }
+      ],
+      "proposalPlan": {
+        "allocations": [
+          {
+            "budgetId": "education-vulnerable",
+            "lineId": "expense-53c9ad36-4f7f-45dd-ba65-c30dcc60633b"
+          },
+          {
+            "budgetId": "education-vulnerable",
+            "lineId": "expense-ca1e575f-b9bc-486e-9539-db9b790a1af0"
+          },
+          {
+            "budgetId": "education-vulnerable",
+            "lineId": "expense-94077274-7d25-4807-8fd0-b625ee8e4fc9"
+          },
+          {
+            "budgetId": "education-vulnerable",
+            "lineId": "expense-8a4c07b4-4f12-49ac-a11a-015ee38e8da6"
+          },
+          {
+            "budgetId": "education-vulnerable",
+            "lineId": "expense-08471078-8bba-47a6-b94f-6c353f47dc38"
+          },
+          {
+            "budgetId": "education-vulnerable",
+            "lineId": "expense-0ab8741d-ac49-4990-b149-3bae8705caf2"
+          },
+          {
+            "budgetId": "education-vulnerable",
+            "lineId": "expense-89154d15-5b6e-4bb1-94be-bac8b9932a18"
+          },
+          {
+            "budgetId": "education-vulnerable",
+            "lineId": "fixed-bus"
+          },
+          {
+            "budgetId": "education-vulnerable",
+            "lineId": "fixed-lodging"
+          },
+          {
+            "budgetId": "education-vulnerable",
+            "lineId": "fixed-insurance"
+          },
+          {
+            "budgetId": "education",
+            "lineId": "fixed-bus"
+          },
+          {
+            "budgetId": "education",
+            "lineId": "fixed-lodging"
+          },
+          {
+            "budgetId": "education",
+            "lineId": "fixed-insurance"
+          },
+          {
+            "budgetId": "education",
+            "lineId": "expense-53c9ad36-4f7f-45dd-ba65-c30dcc60633b"
+          },
+          {
+            "budgetId": "education",
+            "lineId": "expense-ca1e575f-b9bc-486e-9539-db9b790a1af0"
+          },
+          {
+            "budgetId": "education",
+            "lineId": "expense-94077274-7d25-4807-8fd0-b625ee8e4fc9"
+          },
+          {
+            "budgetId": "education",
+            "lineId": "expense-8a4c07b4-4f12-49ac-a11a-015ee38e8da6"
+          },
+          {
+            "budgetId": "education",
+            "lineId": "absent:regular:fixed-bus"
+          },
+          {
+            "budgetId": "education",
+            "lineId": "absent:regular:fixed-lodging"
+          },
+          {
+            "budgetId": "sample-school",
+            "lineId": "expense-8a4c07b4-4f12-49ac-a11a-015ee38e8da6"
+          },
+          {
+            "budgetId": "sample-school",
+            "lineId": "expense-08471078-8bba-47a6-b94f-6c353f47dc38"
+          },
+          {
+            "budgetId": "student",
+            "lineId": "expense-08471078-8bba-47a6-b94f-6c353f47dc38"
+          },
+          {
+            "budgetId": "student",
+            "lineId": "expense-0ab8741d-ac49-4990-b149-3bae8705caf2"
+          },
+          {
+            "budgetId": "student",
+            "lineId": "expense-89154d15-5b6e-4bb1-94be-bac8b9932a18"
+          }
+        ]
+      },
+      "expenses": [
+        {
+          "id": "expense-53c9ad36-4f7f-45dd-ba65-c30dcc60633b",
+          "sourceScheduleItemId": "schedule-587e5fa1-8440-4203-8f80-88e6197c694d",
+          "date": "2026-05-13",
+          "name": "놀이공원 체험 (중식·석식 포함)",
+          "calcMethod": "perPerson",
+          "quantityBase": "participants",
+          "category": "other",
+          "unitAmount": 31000,
+          "planAmount": 0,
+          "paidStaffCount": null,
+          "note": "",
+          "details": {
+            "arrivalTime": "12:00",
+            "departureTime": "19:30",
+            "contact": "중식, 석식: 놀이공원 식당 쿠폰"
+          }
+        },
+        {
+          "id": "expense-ca1e575f-b9bc-486e-9539-db9b790a1af0",
+          "sourceScheduleItemId": "schedule-e9896f23-5970-4145-949e-93837b26758b",
+          "date": "2026-05-14",
+          "name": "뮤지컬 관람",
+          "calcMethod": "perPerson",
+          "quantityBase": "participants",
+          "category": "other",
+          "unitAmount": 18000,
+          "planAmount": 0,
+          "paidStaffCount": null,
+          "note": "",
+          "details": {
+            "arrivalTime": "09:30",
+            "departureTime": "11:00",
+            "contact": ""
+          }
+        },
+        {
+          "id": "expense-94077274-7d25-4807-8fd0-b625ee8e4fc9",
+          "sourceScheduleItemId": "schedule-0f7bfab3-23f2-467b-8098-fbf8409470cb",
+          "date": "2026-05-14",
+          "name": "전통시장 투어 (중식 포함)",
+          "calcMethod": "perPerson",
+          "quantityBase": "participants",
+          "category": "other",
+          "unitAmount": 10000,
+          "planAmount": 0,
+          "paidStaffCount": null,
+          "note": "",
+          "details": {
+            "arrivalTime": "11:30",
+            "departureTime": "13:00",
+            "contact": "중식: 현지식"
+          }
+        },
+        {
+          "id": "expense-8a4c07b4-4f12-49ac-a11a-015ee38e8da6",
+          "sourceScheduleItemId": "schedule-c3f61b80-6f52-4b8d-b893-bd3df1214c83",
+          "date": "2026-05-14",
+          "name": "숙소 석식",
+          "calcMethod": "perPerson",
+          "quantityBase": "participants",
+          "category": "other",
+          "unitAmount": 15000,
+          "planAmount": 0,
+          "paidStaffCount": null,
+          "note": "",
+          "details": {
+            "arrivalTime": "18:00",
+            "departureTime": "19:30",
+            "contact": "석식: 숙소식"
+          }
+        },
+        {
+          "id": "expense-08471078-8bba-47a6-b94f-6c353f47dc38",
+          "sourceScheduleItemId": null,
+          "date": "2026-05-14",
+          "name": "조식: 숙소식",
+          "calcMethod": "perPerson",
+          "quantityBase": "participants",
+          "category": "other",
+          "unitAmount": 12000,
+          "planAmount": 0,
+          "paidStaffCount": null,
+          "note": "",
+          "details": {
+            "arrivalTime": "",
+            "departureTime": "",
+            "contact": ""
+          }
+        },
+        {
+          "id": "expense-0ab8741d-ac49-4990-b149-3bae8705caf2",
+          "sourceScheduleItemId": "schedule-22d50c9a-694f-420d-9d53-31844ae2106a",
+          "date": "2026-05-15",
+          "name": "중식(휴게소)",
+          "calcMethod": "perPerson",
+          "quantityBase": "participants",
+          "category": "other",
+          "unitAmount": 10000,
+          "planAmount": 0,
+          "paidStaffCount": null,
+          "note": "",
+          "details": {
+            "arrivalTime": "12:00",
+            "departureTime": "13:00",
+            "contact": "중식: 현지식"
+          }
+        },
+        {
+          "id": "expense-89154d15-5b6e-4bb1-94be-bac8b9932a18",
+          "sourceScheduleItemId": null,
+          "date": "2026-05-15",
+          "name": "조식: 숙소식",
+          "calcMethod": "perPerson",
+          "quantityBase": "participants",
+          "category": "other",
+          "unitAmount": 12000,
+          "planAmount": 0,
+          "paidStaffCount": null,
+          "note": "",
+          "details": {
+            "arrivalTime": "",
+            "departureTime": "",
+            "contact": ""
+          }
+        }
+      ],
+      "staffExpenses": []
+    }
+  ]
+}
