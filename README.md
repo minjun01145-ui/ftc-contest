@@ -44,6 +44,10 @@ HWPX 또는 PDF 파일 하나를 고르면 **브라우저 안에서** 문서의 
 - `vendor/` : 문서 읽기와 HWPX 만들기에 쓰는 오픈소스 라이브러리(PDF.js, JSZip). 자세한 내용은 [vendor/README.md](vendor/README.md)
 - `examples/` : 시연용 자료. `예시_저장파일.json`(저장 파일 불러오기로 열기), `예시_세부일정표.hwpx`(사업정보의 일정 문서 불러오기로 열기). 모두 가상의 자료입니다.
 
+## 외부 구성요소 라이선스
+
+PDF.js는 Apache License 2.0, CMap은 Adobe의 별도 재배포 조건, JSZip은 선택 라이선스 중 MIT를 사용합니다. JSZip 번들에 포함된 구성요소의 고지도 함께 보관합니다. 소스 ZIP과 설치파일에는 [vendor/README.md](vendor/README.md)에서 안내하는 라이선스·저작권 고지 파일을 포함합니다.
+
 ## 테스트
 
 ```bash
