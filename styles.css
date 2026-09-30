@@ -488,3 +488,9 @@ input.headcount-input { width: 80px; min-width: 0; }
 /* 첫 화면 */
 .home-hint { margin: 0 0 14px; }
 .home-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+/* 업무포털 품목내역 받기 */
+.portal-downloads { margin-top: 12px; padding: 10px 12px; border: 1px solid #b7c7d9; background: #f3f7fc; }
+.portal-downloads h3 { margin: 0 0 8px; font-size: 14px; }
+.portal-buttons { display: flex; flex-wrap: wrap; gap: 6px; }
+.portal-buttons small { color: #555; margin-left: 4px; }
