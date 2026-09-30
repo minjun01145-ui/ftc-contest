@@ -1,11 +1,7 @@
 import { number, uid } from './utils.js';
 
-/**
- * 기타비(project.fixedCosts): 버스비·숙소비·보험비 등.
- * mode 'perPerson'은 1인당 금액, 'total'은 계약액을 인원으로 나눈다(includeChaperones, roundTo10).
- * 나누고 남은 금액(인솔자 몫, 버림 잔액)은 인솔자 비용으로 넘긴다.
- * sharedPeople, sharedProjectIds: 다른 학년과 함께 계산할 때 더하는 인원(sharedCosts.js).
- */
+// mode가 total이면 계약액을 인원으로 나누고, 남은 금액(인솔자 몫, 버림 잔액)은 인솔자 비용으로 넘긴다.
+// sharedPeople은 다른 학년과 함께 계산할 때 더하는 인원(sharedCosts.js).
 export const FIXED_COST_MODES = Object.freeze({
   perPerson: '1인당 금액',
   total: '전체 계약액'
@@ -51,9 +47,7 @@ function normalizeEntry(source, builtin = null) {
   };
 }
 
-/**
- * 저장된 기타비를 정리한다. 기본 항목은 항상 앞에 두고, 사용자가 추가한 항목을 뒤에 붙인다.
- */
+// 기본 항목은 항상 앞에, 사용자가 추가한 항목은 뒤에
 export function normalizeFixedCosts(value) {
   const entries = Array.isArray(value) ? value.filter(item => item && typeof item === 'object') : [];
   const builtins = BUILTIN_FIXED_COSTS.map(builtin => builtinEntry(builtin, entries.find(entry => entry.builtin === builtin.key)));
@@ -61,7 +55,6 @@ export function normalizeFixedCosts(value) {
   return [...builtins, ...custom];
 }
 
-/** 삭제하지 않은 기타비만 */
 export function activeFixedCosts(value) {
   return normalizeFixedCosts(value).filter(entry => !entry.removed);
 }
@@ -73,10 +66,7 @@ export function fixedCostLineId(entry) {
 const floorTo = (value, unit) => Math.floor(value / unit) * unit;
 const won = value => `${Math.round(number(value)).toLocaleString('ko-KR')}원`;
 
-/**
- * 기타비 한 항목의 학생 1인당 금액, 학생 합계, 인솔자 몫, 버림 잔액.
- * counts: { participants, dayAbsent, chaperones }
- */
+// counts: { participants, dayAbsent, chaperones }
 export function fixedCostBreakdown(entry, counts, { dayAbsentSharesCommonCost = false } = {}) {
   const amount = Math.max(0, number(entry?.amount));
   const includesDayAbsent = Boolean(entry?.commonCost && dayAbsentSharesCommonCost);
@@ -112,7 +102,7 @@ export function fixedCostBreakdown(entry, counts, { dayAbsentSharesCommonCost = 
   };
 }
 
-/** 1인당 금액이 어떻게 나왔는지 사람이 읽을 수 있게 설명한다(산출내역 비고란). */
+// 산출내역 비고란에 들어가는 문구
 export function fixedCostBasisText(breakdown) {
   const absent = breakdown.includesDayAbsent && breakdown.dayAbsent > 0 ? `(신청 후 불참 ${breakdown.dayAbsent}명 포함)` : '';
   if (breakdown.mode === 'perPerson') return `1인당 금액 ${won(breakdown.perPerson)} 입력, 학생 ${breakdown.students}명${absent}`;
@@ -132,10 +122,7 @@ function countsOptions(project) {
   return { dayAbsentSharesCommonCost: Boolean(project?.dayAbsentSharesCommonCost) };
 }
 
-/**
- * 금액이 입력된 기타비를 비용 계산 엔진이 쓰는 학생 1인당 비용 항목으로 바꾼다.
- * 1인당 금액을 미리 계산해 두므로 엔진은 다른 체험처와 똑같이 '1인당 금액 × 인원'으로 계산한다.
- */
+// 1인당 금액을 미리 계산해 두면 엔진은 다른 체험처처럼 1인당 금액 × 인원으로 계산하면 된다.
 export function fixedCostExpenses(project, counts) {
   return activeFixedCosts(project?.fixedCosts)
     .filter(entry => entry.amount > 0)
@@ -163,7 +150,6 @@ export function fixedCostExpenses(project, counts) {
     });
 }
 
-/** 전체 계약액에서 학생 몫을 빼고 남은 금액(인솔자 몫과 버림 잔액). 인솔자 비용으로 처리한다. */
 export function fixedCostStaffShares(project, counts) {
   return activeFixedCosts(project?.fixedCosts)
     .filter(entry => entry.amount > 0 && entry.mode === 'total')

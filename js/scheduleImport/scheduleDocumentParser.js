@@ -3,13 +3,8 @@ import { parseRouteSummaryFromLayout, parseRouteSummaryFromLines } from './route
 import { detectYear, isoDate } from './scheduleText.js';
 import { parseDetailedScheduleFromTables } from './tableSchedule.js';
 
-/**
- * 일정 문서를 해석하는 입구.
- * 세부 일정 표(시간이 있는 표)를 먼저 찾고, 없으면 '주요 경로(➡)' 줄을 쓴다.
- *
- * 결과 items는 체험학습 일정 표의 행 모양과 같다:
- *   { date: 'YYYY-MM-DD', place(장소), name, arrivalTime, departureTime, contact(메모·비고) }
- */
+// 세부 일정 표를 먼저 찾고, 없으면 '주요 경로(➡)' 줄을 쓴다.
+// items는 일정 표 행과 같은 모양: { date, place, name, arrivalTime, departureTime, contact }
 const MIN_TABLE_ROWS = 2;
 
 function addDays(isoText, days) {
@@ -17,7 +12,7 @@ function addDays(isoText, days) {
   return new Date(Date.UTC(year, month - 1, day + days)).toISOString().slice(0, 10);
 }
 
-/** 날짜가 없는 행도 같은 문서 안의 'n일차 = 날짜' 관계로 채운다. */
+// 날짜가 없는 행도 같은 문서 안의 'n일차 = 날짜' 관계로 채운다.
 export function scheduleItemsFromRows(rows, year) {
   const anchor = rows.find(row => row.monthDay && row.dayNumber);
   const firstDay = anchor ? addDays(isoDate(year, anchor.monthDay), 1 - anchor.dayNumber) : '';
@@ -37,14 +32,12 @@ function choose(detailedRows, routeRows) {
   return { rows: [], source: 'none' };
 }
 
-/** PDF 글자 조각(pages: [{ pageNumber, items: [{ text, x, y }] }])에서 일정을 읽는다. */
 export function parseScheduleFromLayout(pages, { fallbackYear } = {}) {
   const year = detectYear(pages.flatMap(page => page.items.map(item => item.text)), fallbackYear);
   const { rows, source } = choose(parseDetailedScheduleTable(pages), parseRouteSummaryFromLayout(pages));
   return { items: scheduleItemsFromRows(rows, year), source };
 }
 
-/** 표와 문단으로 읽은 문서(HWPX: { tables, paragraphs })에서 일정을 읽는다. */
 export function parseScheduleFromTables({ tables, paragraphs }, { fallbackYear } = {}) {
   const year = detectYear(paragraphs, fallbackYear);
   const { rows, source } = choose(parseDetailedScheduleFromTables(tables), parseRouteSummaryFromLines(paragraphs));

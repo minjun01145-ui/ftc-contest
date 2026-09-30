@@ -24,7 +24,6 @@ export const PROJECT_SECTION_ITEMS = Object.freeze([
 
 const validSections = new Set(PROJECT_SECTION_ITEMS.map(item => item.key));
 
-// 없는 메뉴 이름이면 사업정보를 연다.
 export function normalizeProjectSection(value) {
   return validSections.has(value) ? value : PROJECT_SECTION.BUSINESS;
 }

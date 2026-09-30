@@ -5,10 +5,7 @@ import { escapeHtml, number } from '../../utils.js';
 
 const won = value => Math.round(number(value)).toLocaleString('ko-KR');
 
-/**
- * 표의 첫 칸(항목). 날짜가 있는 항목은 같은 날짜끼리 묶어 한 번만 쓰고(엑셀 병합 셀과 같은 모양),
- * 고정비는 항목 이름을 쓴다.
- */
+// 같은 날짜는 첫 줄에만 날짜를 쓴다(엑셀 병합 셀처럼).
 function withGroupCells(lines) {
   return lines.map((line, index) => {
     if (line.isFixedCost || !line.date) return { line, group: line.isFixedCost ? line.name : '', span: 1 };

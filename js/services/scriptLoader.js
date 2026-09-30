@@ -1,4 +1,3 @@
-/** 저장소에 함께 둔 라이브러리(vendor)를 <script> 태그로 불러온다. 같은 주소는 한 번만 불러온다. */
 const loaded = new Map();
 
 export function loadScript(src) {

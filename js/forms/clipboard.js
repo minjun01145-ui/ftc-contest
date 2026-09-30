@@ -1,7 +1,4 @@
-/**
- * 한글(HWP)에 붙여넣을 표 복사. 서식(HTML)과 글자(탭 구분)를 함께 복사한다.
- * 한글은 HTML 표를 붙여넣으면 병합·테두리·음영을 표로 살려 준다.
- */
+// 한글은 HTML 표를 붙여넣으면 병합·테두리·음영을 살려 준다. 안 되는 곳을 위해 탭 구분 글자도 같이 넣는다.
 export async function copyRichText(html, text) {
   const wrapped = `<html><head><meta charset="utf-8"></head><body>${html}</body></html>`;
   if (globalThis.ClipboardItem && navigator.clipboard?.write) {
@@ -39,10 +36,7 @@ function hexColor(value) {
   return `#${match.slice(1, 4).map(part => Number(part).toString(16).padStart(2, '0')).join('')}`;
 }
 
-/**
- * 화면에 보이는 표를 인라인 스타일만 쓰는 표로 바꾼다(색·굵기·정렬을 그대로 옮기고 테두리는 검은 실선).
- * 입력칸·버튼은 글자로 바꾸거나 뺀다.
- */
+// 색·굵기·정렬은 인라인 스타일로 옮기고 테두리는 검은 실선. 입력칸·버튼은 글자로 바꾸거나 뺀다.
 export function tableForPaste(table) {
   const clone = table.cloneNode(true);
   const sourceCells = [...table.querySelectorAll('th, td')];

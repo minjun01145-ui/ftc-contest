@@ -5,10 +5,8 @@ import { EDUCATION_BUDGET_ID, STUDENT_BUDGET_ID, VULNERABLE_BUDGET_ID, buildProp
 import { number } from './utils.js';
 import { summarizeAttendance } from './attendance.js';
 
-/**
- * 검증 도우미. 입력한 값을 여러 방법으로 다시 계산해 서로 맞는지 본다(저장은 막지 않음).
- * check = { id, title, status: 'ok' | 'warn' | 'fail' | 'skip', lines, result, items }
- */
+// 같은 값을 여러 방법으로 다시 계산해 서로 맞는지 본다. 저장은 막지 않는다.
+// check = { id, title, status: 'ok' | 'warn' | 'fail' | 'skip', lines, result, items }
 const won = value => `${Math.round(number(value)).toLocaleString('ko-KR')}원`;
 const sum = (items, pick) => items.reduce((total, item) => total + (Number(pick(item)) || 0), 0);
 const same = (left, right) => Math.round(left) === Math.round(right);
@@ -23,7 +21,7 @@ function otherBlocks(proposal) {
 
 const absentGroupName = group => (group === 'vulnerable' ? '취약계층' : '비취약계층');
 
-/* 1. 인원: 학년 학생수 = 신청 + 미신청, 신청 = 참여 + 신청 후 불참, 참여 = 취약 + 비취약 */
+// 1. 인원: 학년 학생수 = 신청 + 미신청, 신청 = 참여 + 신청 후 불참, 참여 = 취약 + 비취약
 function headcountCheck(project) {
   const summary = summarizeAttendance(project.attendance, project.totalStudents);
   const absent = summary.regularAbsent + summary.vulnerableAbsent;
@@ -49,7 +47,7 @@ function headcountCheck(project) {
   };
 }
 
-/* 2. 학생 1인당 금액 × 참여 인원 + 신청 후 불참 공통비 = 학생 경비 총액 = 예산별 품의 총액 */
+// 2. 학생 1인당 금액 × 참여 인원 + 신청 후 불참 공통비 = 학생 경비 총액 = 예산별 품의 총액
 function perPersonTotalCheck(proposal) {
   const participants = proposal.counts.regular + proposal.counts.vulnerable;
   const participantCost = proposal.perPersonTotal * participants;
@@ -86,7 +84,7 @@ function perPersonTotalCheck(proposal) {
   };
 }
 
-/* 3. 계층별 경비 = 계층별 품의액 (취약 + 비취약 + 신청 후 불참 = 전체 예산액) */
+// 3. 계층별 경비 = 계층별 품의액 (취약 + 비취약 + 신청 후 불참 = 전체 예산액)
 function cohortCheck(proposal) {
   const vulnerable = blockOf(proposal, VULNERABLE_BUDGET_ID);
   const education = blockOf(proposal, EDUCATION_BUDGET_ID);
@@ -148,7 +146,7 @@ function cohortCheck(proposal) {
   };
 }
 
-/* 4. 학생 1인당 금액 = 예산별 1인당 금액의 합 */
+// 4. 학생 1인당 금액 = 예산별 1인당 금액의 합
 function perPersonSplitCheck(proposal) {
   const vulnerable = blockOf(proposal, VULNERABLE_BUDGET_ID);
   const education = blockOf(proposal, EDUCATION_BUDGET_ID);
@@ -187,7 +185,7 @@ function perPersonSplitCheck(proposal) {
   };
 }
 
-/* 5. 교육청 지원금: 한도와 교부액 */
+// 5. 교육청 지원금: 한도와 교부액
 function educationCheck(proposal) {
   const vulnerable = blockOf(proposal, VULNERABLE_BUDGET_ID);
   const education = blockOf(proposal, EDUCATION_BUDGET_ID);
@@ -226,7 +224,7 @@ function educationCheck(proposal) {
   };
 }
 
-/* 6. 기타 지원금: 받은 금액 안에서 썼는가 */
+// 6. 기타 지원금: 받은 금액 안에서 썼는가
 function otherSupportCheck(project, proposal) {
   const blocks = otherBlocks(proposal);
   if (!blocks.length) {
@@ -255,7 +253,7 @@ function otherSupportCheck(project, proposal) {
   };
 }
 
-/* 7. 기타비 계약액 = 학생 몫 + 인솔자 몫 + 다른 학년 몫 + 버림 잔액 */
+// 7. 기타비 계약액 = 학생 몫 + 인솔자 몫 + 다른 학년 몫 + 버림 잔액
 function fixedCostCheck(project) {
   const c = projectCounts(project);
   const counts = { participants: c.participants, dayAbsent: c.contractedAbsent, chaperones: c.chaperones };
@@ -288,7 +286,7 @@ function fixedCostCheck(project) {
   };
 }
 
-/* 8. 배정하지 않은 금액 */
+// 8. 배정하지 않은 금액
 function unassignedCheck(proposal) {
   const lines = [];
   for (const line of proposal.unassigned.regular) lines.push(`비취약계층 ${line.name} 1인 ${won(line.perPerson)}`);
@@ -303,7 +301,7 @@ function unassignedCheck(proposal) {
   };
 }
 
-/* 9. 체험처/비용 기초자료 점검 */
+// 9. 체험처/비용 기초자료 점검
 function inputCheck(project) {
   const issues = checkStudentExpenses(project);
   return {

@@ -1,7 +1,6 @@
 import { costFormHtml, costFormModel } from '../../forms/costForm.js';
 import { scheduleFormHtml, scheduleFormModel } from '../../forms/scheduleForm.js';
 
-/** 양식 생성기: 계획서·가정통신문에 넣는 표를 한글에 붙여넣거나 HWPX 파일로 내려받는다. */
 function formCard({ title, copyAction, downloadAction, enabled, warnings = [], preview }) {
   return `
       <section class="form-card">

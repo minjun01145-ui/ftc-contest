@@ -1,18 +1,7 @@
 import { number } from './utils.js';
 
-/**
- * 인원. 인원 화면에서 입력한 값만 저장하고, 참여 인원 등은 여기서 계산한다.
- *
- * project.totalStudents : 해당 학년 학생수
- * project.attendance = {
- *   applicants            신청자 수
- *   vulnerableApplicants  신청자 중 취약계층
- *   regularDayAbsent      신청 후 불참(비취약계층)
- *   vulnerableDayAbsent   신청 후 불참(취약계층)
- *   chaperones            인솔자 수
- * }
- * 실제 참여 = 신청자 − 신청 후 불참, 불참(미신청) = 학년 학생수 − 신청자
- */
+// 입력값만 저장하고 참여 인원은 계산해서 쓴다.
+// 실제 참여 = 신청자 - 신청 후 불참, 미신청 = 학년 학생수 - 신청자
 export const ATTENDANCE_FIELDS = Object.freeze(['applicants', 'vulnerableApplicants', 'regularDayAbsent', 'vulnerableDayAbsent', 'chaperones']);
 
 const count = value => Math.max(0, Math.floor(number(value)));
@@ -26,7 +15,6 @@ export function normalizeAttendance(value) {
   return Object.fromEntries(ATTENDANCE_FIELDS.map(key => [key, count(source[key])]));
 }
 
-/** 입력한 인원이 서로 맞는지. 문제가 있으면 안내 문구 목록을 돌려준다. */
 export function attendanceIssues(totalStudents, attendance) {
   const isCount = value => Number.isInteger(value) && value >= 0;
   const { applicants, vulnerableApplicants, regularDayAbsent, vulnerableDayAbsent, chaperones } = attendance;

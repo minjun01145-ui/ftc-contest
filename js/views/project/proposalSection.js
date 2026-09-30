@@ -34,7 +34,7 @@ function absentCount(proposal, group) {
   return group === 'vulnerable' ? proposal.counts.vulnerableAbsent : proposal.counts.regularAbsent;
 }
 
-/* ---------- 사용 방법과 진행 상황 ---------- */
+// 사용 방법과 진행 상황
 
 function guideBox() {
   return `
@@ -75,7 +75,7 @@ function progressBox(proposal) {
     </div>`;
 }
 
-/* ---------- 예산 카드 ---------- */
+// 예산 카드
 
 function settingEditor(budget) {
   const { setting } = budget;
@@ -91,7 +91,7 @@ function settingEditor(budget) {
     </label>`;
 }
 
-/** 예) 예산 1인당 100,000원 × 10명(참여 9 + 신청 후 불참 1) = 1,000,000원 */
+// 예) 예산 1인당 100,000원 × 10명(참여 9 + 신청 후 불참 1) = 1,000,000원
 function budgetTotalLine(block) {
   if (block.budgetTotal === null || block.absentCount <= 0) return '';
   if (block.budget.poolTotal !== null && block.budget.poolTotal !== undefined) {
@@ -187,7 +187,6 @@ function countText(proposal, budget) {
   return absent > 0 ? `${budget.count}명(신청 후 불참 ${absent}명, 공통비 부담)` : `${budget.count}명`;
 }
 
-/** 카드 아래 계산식: 참여 인원 × 1인당 금액, 신청 후 불참 인원 × 공통비 */
 function formulaLines(block) {
   const lines = [`${block.budget.count}명 × ${won(block.usedPerPerson)}원 = ${won(block.participantTotal)}원`];
   for (const group of ['vulnerable', 'regular']) {
@@ -240,13 +239,13 @@ function budgetCard(proposal, block) {
     </section>`;
 }
 
-/* ---------- 예산별 품의 내용(엑셀 3번 표) ---------- */
+// 예산별 품의 내용(엑셀 3번 표)
 
 const SPLIT_COLORS = 6;
 
 const partKey = (block, part) => (part.absent ? part.lineId : `${block.budget.group}:${part.lineId}`);
 
-/** 여러 예산으로 나눈 항목마다 색 번호를 붙인다(같은 항목의 조각은 같은 색). */
+// 여러 예산으로 나눈 항목은 조각마다 같은 색
 function splitColors(proposal) {
   const seen = new Map();
   for (const block of proposal.blocks) {
@@ -289,7 +288,6 @@ function absentItemRows(block, parts, colors) {
   });
 }
 
-/** 신청 후 불참 학생 몫: 머리 줄(몇 명에게 1인당 얼마) + 항목 줄 */
 function absentRows(block, colors, headText) {
   return ['vulnerable', 'regular'].flatMap(group => {
     const parts = block.absentParts.filter(part => part.group === group);
@@ -380,7 +378,7 @@ function proposalTable(proposal) {
     ${legend}`;
 }
 
-/* ---------- 품의 안내 ---------- */
+// 품의 안내
 
 export function proposalGuide(proposal) {
   const steps = tableGroups(proposal).groups.map(group => `${group.name}: 총 ${won(group.total)}원`);
@@ -412,7 +410,6 @@ function guideHtml(proposal) {
     ${notes.length ? `<ul class="proposal-notes">${notes.map(note => `<li>${escapeHtml(note)}</li>`).join('')}</ul>` : ''}`;
 }
 
-/** 업무포털 품의에 올리는 품목내역 파일. 업무포털은 예산 하나씩 올리므로 예산마다 버튼을 둔다. */
 function portalDownloads(proposal) {
   const budgets = portalBudgets(proposal);
   if (!budgets.length) return '';

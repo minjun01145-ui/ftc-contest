@@ -1,10 +1,8 @@
 import { STUDENT_BUDGET_ID } from '../proposalPlanner.js';
 import { buildXls } from './xlsWriter.js';
 
-/**
- * 업무포털 품의용 '품목내역' 엑셀(.xls). 업무포털은 예산 하나씩 올리므로 예산마다 파일을 만든다.
- * 열: 내용 | 규격 | 단위 | 수량 | 예상단가 (수량 × 예상단가의 합 = 그 예산의 품의액)
- */
+// 업무포털은 품목내역을 예산 하나씩 올리므로 예산마다 파일을 따로 만든다.
+// 수량 × 예상단가의 합이 그 예산의 품의액과 같아야 한다.
 export const PORTAL_ITEM_HEADER = Object.freeze(['내용', '규격', '단위', '수량', '예상단가']);
 export const PORTAL_SHEET_NAME = '품목내역';
 
@@ -16,7 +14,6 @@ function shortDate(isoDate) {
 const itemName = item => [shortDate(item.date), item.name].filter(Boolean).join(' ');
 const groupName = group => (group === 'vulnerable' ? '취약계층' : '비취약계층');
 
-/** 예산 하나의 품목 줄. [[내용, 규격, 단위, 수량, 예상단가], ...] */
 export function portalItemRows(proposal, budgetId) {
   const block = proposal.blocks.find(item => item.budget.id === budgetId);
   if (!block) return [];
@@ -35,7 +32,6 @@ export function portalItemRows(proposal, budgetId) {
   return rows.filter(([, , , count, price]) => count > 0 && price > 0);
 }
 
-/** 품목내역을 받을 수 있는 예산(배정한 금액이 있는 예산) */
 export function portalBudgets(proposal) {
   return proposal.blocks
     .filter(block => portalItemRows(proposal, block.budget.id).length > 0)

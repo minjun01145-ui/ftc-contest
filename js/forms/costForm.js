@@ -5,10 +5,7 @@ import { activeFixedCosts, fixedCostBreakdown, fixedCostLineId } from '../fixedC
 import { EDUCATION_BUDGET_ID, STUDENT_BUDGET_ID, VULNERABLE_BUDGET_ID, buildProposal } from '../proposalPlanner.js';
 import { escapeHtml, number } from '../utils.js';
 
-/**
- * 가정통신문·계획서용 '현장체험학습 경비 산출내역' (일자 | 경비 산출).
- * model = { rows: [{ label, items, kind: 'date' | 'fixed' }], perPerson, notes }
- */
+// model = { rows: [{ label, items, kind: 'date' | 'fixed' }], perPerson, notes }
 export const COST_FORM_TITLE = '현장체험학습 경비 산출내역';
 
 const won = value => `${Math.round(number(value)).toLocaleString('ko-KR')}원`;
@@ -82,13 +79,12 @@ export function costFormModel(project) {
   return { rows, perPerson, notes: supportNotes(project, perPerson) };
 }
 
-/* ---------- HTML(화면 미리보기, 한글 붙여넣기) ---------- */
+// HTML(화면 미리보기, 한글 붙여넣기)
 
 const FONT = "font-family:'맑은 고딕','Malgun Gothic',sans-serif;font-size:10pt;";
 const CELL = `border:1px solid #000;${FONT}padding:3px 6px;vertical-align:middle;`;
 const lines = list => list.map(escapeHtml).join('<br>');
 
-/** 인라인 스타일과 표 속성만 쓰는 표. 한글에 붙여넣어도 테두리·음영이 남는다. */
 export function costFormHtml(model, { title = COST_FORM_TITLE } = {}) {
   const head = `<tr>
     <th width="24%" bgcolor="#F0F0F0" align="center" valign="middle" style="${CELL}background:#F0F0F0;font-weight:normal;text-align:center;">일자</th>
@@ -114,7 +110,6 @@ export function costFormHtml(model, { title = COST_FORM_TITLE } = {}) {
     + `<thead>${head}</thead><tbody>${body}${empty}${total}${notes}</tbody></table>`;
 }
 
-/** 붙여넣기용 일반 글자(탭으로 칸 구분). */
 export function costFormText(model) {
   return [
     '일자\t경비 산출',

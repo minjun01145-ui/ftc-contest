@@ -1,15 +1,11 @@
 import { projectCounts } from './engine.js';
 import { normalizeFixedCosts } from './fixedCosts.js';
 
-/**
- * 다른 학년과 함께 계산하는 기타비(버스비 등).
- * sharedProjectIds에 연결한 사업의 인원을 더해 sharedPeople로 두고, 저장할 때마다 다시 센다. 연결은 양쪽에 건다.
- */
+// 다른 학년과 함께 계산하는 기타비(버스비 등). 연결은 양쪽 사업에 걸고, 인원은 저장할 때마다 다시 센다.
 function sameEntry(entry, target) {
   return target.builtin ? entry.builtin === target.builtin : entry.label === target.label;
 }
 
-/** 한 사업에서 이 기타비를 함께 부담할 인원. */
 export function sharedPeopleOf(project, target) {
   const settings = normalizeFixedCosts(project.fixedCosts).find(entry => !entry.removed && sameEntry(entry, target)) ?? target;
   const c = projectCounts(project);
@@ -25,7 +21,7 @@ export function sharedNoteText(linked) {
   return linked.map(item => `${item.title} ${item.people}명`).join(', ');
 }
 
-/** 연결한 사업의 현재 인원으로 모든 사업의 sharedPeople·sharedNote를 다시 채운다. 없어진 사업은 연결에서 뺀다. */
+// 없어진 사업은 연결에서 뺀다.
 export function syncSharedCounts(state) {
   const byId = new Map(state.projects.map(project => [project.id, project]));
   const projects = state.projects.map(project => {
@@ -62,11 +58,9 @@ function withEntry(project, target, change) {
   return { ...project, fixedCosts: entries.map((entry, i) => (i === index ? change(entry) : entry)) };
 }
 
-/**
- * 사업 하나를 저장할 때 '함께 계산' 연결을 상대 사업에도 걸거나 푼다.
- * - 연결한 사업들: 같은 항목을 전체 계약액으로 바꾸고 계약액·1원 단위 버림을 맞추고, 서로를 연결한다.
- * - 연결에서 뺀 사업: 이 묶음과의 연결을 푼다.
- */
+// 사업 하나를 저장할 때 '함께 계산' 연결을 상대 사업에도 걸거나 푼다.
+// - 연결한 사업들: 같은 항목을 전체 계약액으로 바꾸고 계약액·1원 단위 버림을 맞추고, 서로를 연결한다.
+// - 연결에서 뺀 사업: 이 묶음과의 연결을 푼다.
 export function propagateSharedLinks(projects, previousProject, nextProject) {
   const previous = normalizeFixedCosts(previousProject?.fixedCosts);
   let result = projects.map(project => (project.id === nextProject.id ? nextProject : project));

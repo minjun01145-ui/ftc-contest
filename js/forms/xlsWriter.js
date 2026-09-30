@@ -1,7 +1,5 @@
-/**
- * 엑셀 97-2003(.xls, BIFF8) 파일 쓰기. 시트 하나에 글자와 숫자만 쓴다.
- * Workbook 스트림을 OLE2 복합 문서에 담으며, 4096바이트 미만 스트림은 미니 스트림에 넣는다.
- */
+// 엑셀 97-2003(.xls, BIFF8) 파일 쓰기. 시트 하나에 글자와 숫자만 쓴다.
+// Workbook 스트림을 OLE2 복합 문서에 담으며, 4096바이트 미만 스트림은 미니 스트림에 넣는다.
 
 class ByteWriter {
   constructor() {
@@ -108,7 +106,6 @@ function sheet(rows, strings) {
   return out;
 }
 
-/** 시트 하나짜리 BIFF8 Workbook 스트림 */
 export function workbookStream(sheetName, rows) {
   const strings = { list: [], index: new Map(), total: 0 };
   for (const row of rows) {
@@ -125,7 +122,7 @@ export function workbookStream(sheetName, rows) {
   return new ByteWriter().append(globals(sheetName, strings, sheetOffset)).append(sheet(rows, strings)).bytes;
 }
 
-/* ---------- 복합 문서(OLE2) ---------- */
+// 복합 문서(OLE2)
 
 const SECTOR = 512;
 const MINI = 64;
@@ -152,7 +149,6 @@ const pad = (bytes, unit) => {
   return copy;
 };
 
-/** Workbook 스트림을 .xls 파일 바이트로 감싼다. */
 export function compoundFile(stream) {
   const useMini = stream.length < MINI_CUTOFF;
   const data = useMini ? pad(pad(stream, MINI), SECTOR) : pad(stream, SECTOR);
@@ -212,7 +208,6 @@ export function compoundFile(stream) {
   return bytes;
 }
 
-/** rows: [[글자 또는 숫자, ...], ...] → .xls 파일 바이트 */
 export function buildXls(sheetName, rows) {
   return compoundFile(workbookStream(sheetName, rows));
 }

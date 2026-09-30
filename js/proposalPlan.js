@@ -1,7 +1,4 @@
-/**
- * 품의 도우미에서 체크한 항목(allocations: [{ budgetId, lineId }], 체크한 순서)만 저장한다.
- * 금액은 저장하지 않고 매번 다시 계산한다.
- */
+// 체크한 항목과 순서만 저장하고 금액은 매번 다시 계산한다.
 export function createProposalPlan() {
   return { allocations: [] };
 }

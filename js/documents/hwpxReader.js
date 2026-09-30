@@ -1,13 +1,8 @@
 import { loadScript } from '../services/scriptLoader.js';
 import { DocumentReadError } from './documentReadError.js';
 
-/**
- * HWPX(한글 문서의 압축 XML 형식)에서 표와 문단을 읽는다(vendor/jszip 사용).
- *
- * 결과: { tables: [[{ cells: [{ col, text }] }]], paragraphs: [text] }
- *   - 표 안의 표(중첩 표)는 따로 하나의 표로 읽는다.
- *   - 셀의 col은 HWPX가 적어 둔 열 번호(cellAddr colAddr)다.
- */
+// 결과: { tables: [[{ cells: [{ col, text }] }]], paragraphs: [text] }
+// 표 안의 표는 따로 하나의 표로 읽는다. col은 cellAddr의 colAddr 값.
 const JSZIP_URL = new URL('../../vendor/jszip/jszip.min.js', import.meta.url).href;
 
 async function loadJsZip() {

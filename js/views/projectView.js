@@ -25,7 +25,6 @@ const SECTION_RENDERERS = Object.freeze({
   [PROJECT_SECTION.SETTLEMENT]: renderSettlementSection
 });
 
-/** 페이지 맨 위의 전체 저장 버튼. 이 페이지의 모든 입력을 한 번에 저장한다. */
 export function saveAllBar(type = 'button') {
   return `
     <div class="save-all-bar no-print">
@@ -52,7 +51,7 @@ function applyHeadcount(next, data) {
   next.dayAbsentSharesCommonCost = headcount.dayAbsentSharesCommonCost;
 }
 
-/** 현재 화면에 있는 입력칸만 읽어 사업 데이터에 반영한다. 화면에 없는 값은 그대로 둔다. */
+// 화면에 없는 값은 그대로 둔다.
 export function readProjectForm(form, previous) {
   const data = new FormData(form);
   const next = { ...previous };
@@ -74,7 +73,6 @@ export function readProjectForm(form, previous) {
 
   const staffTbody = form.querySelector('#staffExpenseTableBody');
   if (staffTbody) next.staffExpenses = readExpenseRows(staffTbody, previous.staffExpenses ?? []);
-
 
   return next;
 }

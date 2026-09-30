@@ -3,10 +3,7 @@ import { applyCostMethod, costInputAmount, costMethodOf, costMethodOptions } fro
 import { escapeHtml, number } from '../utils.js';
 import { dayToneClass, dayToneMap } from './dayTone.js';
 
-/**
- * 체험처/비용 표(학생용·인솔자용 공통): 순서 | 일자 | 체험처/항목 | 계산방법 | 단가 | 삭제
- * 인솔자용 표는 학생용과 모양이 같아서 초안 자동 작성 결과를 그대로 보여 줄 수 있다.
- */
+// 학생용·인솔자용 공통. 모양이 같아야 인솔자 초안을 그대로 넣을 수 있다.
 const COLUMN_COUNT = 6;
 const EMPTY_TEXT = '등록된 체험처/비용 항목이 없습니다.';
 
@@ -37,7 +34,6 @@ function emptyRowHtml() {
   return `<tr data-empty-row><td colspan="${COLUMN_COUNT}" class="center">${EMPTY_TEXT}</td></tr>`;
 }
 
-// 같은 날짜의 행은 같은 색으로 칠해 일자별로 알아보기 쉽게 한다(저장하면 다시 칠한다).
 export function renderExpenseRows(expenses, kind = 'student') {
   if (!expenses.length) return emptyRowHtml();
   const tones = dayToneMap(expenses.map(expense => expense.date));

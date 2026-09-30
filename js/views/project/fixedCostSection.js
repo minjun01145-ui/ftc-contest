@@ -24,7 +24,7 @@ function withParticle(word) {
   return `${word}${code % 28 ? '과' : '와'}`;
 }
 
-/** 예) 1학년 수학여행과 같이 계산 */
+// 예) 1학년 수학여행과 같이 계산
 export function sharedWithText(titles) {
   return `${withParticle(titles.join(', '))} 같이 계산`;
 }
@@ -33,7 +33,7 @@ function sharedSummary({ sharedPeople, sharedNote }) {
   return sharedPeople > 0 ? `다른 학년 +${sharedPeople}명${sharedNote ? ` (${sharedNote})` : ''}` : '';
 }
 
-/** 다른 학년과 함께 계산: 더한 인원 표시와 열기/해제 버튼. 값은 숨은 칸에 두고 저장할 때 읽는다. */
+// 값은 숨은 칸에 두고 저장할 때 읽는다.
 function sharedCountHtml(entry, disabled) {
   const summary = sharedSummary(entry);
   return `
@@ -99,7 +99,7 @@ function staffShareRows(project) {
       </tr>`).join('');
 }
 
-/** 체험처/비용 화면의 기타비 입력 표. 1인당 금액과 합계는 저장한 인원 기준으로 보여 준다. */
+// 1인당 금액과 합계는 저장된 인원 기준
 export function renderFixedCostTable(project) {
   const counts = countsOf(project);
   const options = { dayAbsentSharesCommonCost: Boolean(project.dayAbsentSharesCommonCost) };
@@ -107,7 +107,6 @@ export function renderFixedCostTable(project) {
   const rows = entries
     .map(entry => fixedCostRowHtml(entry, fixedCostBreakdown(entry, counts, options)))
     .join('');
-  // 삭제한 기본 항목을 다시 추가하는 버튼
   const restore = entries.filter(entry => entry.builtin)
     .map(entry => `<button type="button" class="small-button" data-action="restore-fixed-cost" data-builtin="${entry.builtin}" ${entry.removed ? '' : 'hidden'}>+ ${escapeHtml(entry.label)}</button>`)
     .join('');
@@ -141,7 +140,7 @@ export function addFixedCostRow(button) {
   added?.querySelector('[data-fixed-field="label"]')?.focus();
 }
 
-/** 사용자 항목은 지우고, 기본 항목(버스비 등)은 숨겨 두었다가 다시 추가할 수 있게 한다. */
+// 기본 항목(버스비 등)은 지우지 않고 숨겨서 다시 추가할 수 있게 한다.
 export function removeFixedCostRow(button) {
   const row = button.closest('[data-fixed-row]');
   if (!row) return;
@@ -165,14 +164,12 @@ export function restoreFixedCostRow(button) {
   button.hidden = true;
 }
 
-/** 입력 방식을 바꾸면 전체 계약액 전용 체크박스를 켜고 끈다. */
 export function syncFixedCostModeControls(select) {
   select.closest('.fixed-cost-mode')?.querySelectorAll('[data-total-only]').forEach(checkbox => {
     checkbox.disabled = select.value !== 'total';
   });
 }
 
-/** 폼에 기타비 표가 있으면 행을 읽고, 없으면 기존 값을 그대로 돌려준다. */
 export function readFixedCostInputs(form, previousFixedCosts) {
   const tbody = form.querySelector('[data-fixed-cost-list]');
   const previous = normalizeFixedCosts(previousFixedCosts);
@@ -204,9 +201,9 @@ export function readFixedCostInputs(form, previousFixedCosts) {
   }));
 }
 
-/* ---------- 다른 학년과 함께 계산 ---------- */
+// 다른 학년과 함께 계산
 
-/** 내 사업 중 다른 사업의 같은 기타비(버스비 등)를 함께 부담할 인원. 이미 연결한 사업은 체크해 둔다. */
+// 이미 연결한 사업은 체크해 둔다.
 export function sharedCandidates(projects, currentProjectId, row) {
   const target = {
     builtin: row.dataset.builtin || null,
@@ -261,7 +258,6 @@ export function closeSharedPanel(button) {
   button.closest('[data-shared-panel]')?.remove();
 }
 
-/** 패널에서 고른 인원을 해당 기타비 행의 숨은 칸에 넣는다. 값을 넣었으면 true. */
 export function applySharedCount(button, mode) {
   const panel = button.closest('[data-shared-panel]');
   const row = panel?.previousElementSibling;

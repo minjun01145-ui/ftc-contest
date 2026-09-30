@@ -2,10 +2,8 @@ import { projectCounts } from './engine.js';
 import { EDUCATION_BUDGET_ID, STUDENT_BUDGET_ID, VULNERABLE_BUDGET_ID, buildProposal } from './proposalPlanner.js';
 import { number } from './utils.js';
 
-/**
- * 교육청 '(초6·중2·고2) 현장체험학습비 지원금 정산 서식'을 채울 때 참고할 값.
- * 품의 도우미의 예산 배정 결과를 쓰므로, 시행 후 인원·비용을 실제대로 고친 뒤 확인한다.
- */
+// 교육청 '(초6·중2·고2) 현장체험학습비 지원금 정산 서식'에 옮겨 적을 값.
+// 품의 도우미 배정 결과를 쓰므로 시행 후 인원·비용을 실제대로 고친 뒤 봐야 한다.
 const won = value => `${Math.round(number(value)).toLocaleString('ko-KR')}원`;
 
 function parseDate(text) {

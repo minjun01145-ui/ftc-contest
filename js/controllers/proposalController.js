@@ -3,9 +3,6 @@ import { absentChecklist, budgetChecklist, buildProposal, findAllocationResult, 
 
 const won = value => `${Math.round(Number(value) || 0).toLocaleString('ko-KR')}원`;
 
-/**
- * 품의 도우미의 체크 동작. 체크할 때마다 바로 저장하고, 예산을 넘었으면 얼마나 넣고 남겼는지 알려 준다.
- */
 export function createProposalController({ getProject, saveProject, showMessage }) {
   function save(project, plan) {
     const next = { ...project, proposalPlan: plan };

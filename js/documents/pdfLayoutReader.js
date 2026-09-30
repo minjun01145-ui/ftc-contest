@@ -1,10 +1,6 @@
 import { DocumentReadError } from './documentReadError.js';
 
-/**
- * PDF 파일에서 쪽마다 글자 조각과 위치를 읽는다(vendor/pdfjs 사용).
- *
- * 결과: [{ pageNumber, items: [{ text, x, y }] }]  (x, y는 PDF 좌표, y가 클수록 위쪽)
- */
+// 결과: [{ pageNumber, items: [{ text, x, y }] }] (PDF 좌표라 y가 클수록 위쪽)
 const PDFJS_URL = new URL('../../vendor/pdfjs/pdf.min.mjs', import.meta.url).href;
 const WORKER_URL = new URL('../../vendor/pdfjs/pdf.worker.min.mjs', import.meta.url).href;
 const CMAP_URL = new URL('../../vendor/pdfjs/cmaps/', import.meta.url).href;

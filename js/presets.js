@@ -4,15 +4,10 @@ import { createFixedCosts, normalizeFixedCosts } from './fixedCosts.js';
 import { createProposalPlan, normalizeProposalPlan } from './proposalPlan.js';
 import { number, uid } from './utils.js';
 
-/**
- * 저장 데이터의 기본 모양과 정리(불러온 파일에 빠진 값 채우기).
- *
- * state = { school: { name, level, establishment }, projects: [project] }
- */
+// state = { school: { name, level, establishment }, projects: [project] }
 export const SCHOOL_LEVELS = Object.freeze(['초', '중', '고']);
 export const ESTABLISHMENTS = Object.freeze(['공립', '사립', '국립']);
 
-/** 학교급에 따른 학년 목록: 초등학교 1~6학년, 중·고등학교 1~3학년 */
 export function gradesFor(level) {
   return level === '초' ? [1, 2, 3, 4, 5, 6] : [1, 2, 3];
 }

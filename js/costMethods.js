@@ -1,10 +1,7 @@
 import { number } from './utils.js';
 
-/**
- * 체험처/비용 표의 "계산방법" 선택지와 calcMethod/quantityBase 사이 변환.
- * perParticipant: 참여 학생 수 × 단가, studentTotal: (참여 + 신청 후 불참) × 단가,
- * perStaff: 인솔자 수 × 단가, staffTotal: 입력한 총액
- */
+// perParticipant: 참여 학생 수 × 단가, studentTotal: (참여 + 신청 후 불참) × 단가
+// perStaff: 인솔자 수 × 단가, staffTotal: 입력한 총액
 const perPerson = quantityBase => ({
   matches: expense => expense.calcMethod === 'perPerson' && (quantityBase === null || expense.quantityBase === quantityBase),
   amountOf: expense => number(expense.unitAmount),
@@ -45,12 +42,10 @@ export function costMethodOptions(kind) {
   return methodsFor(kind).map(({ value, label }) => ({ value, label }));
 }
 
-/** 표의 금액 입력칸에 보여 줄 값 */
 export function costInputAmount(kind, expense) {
   return methodOf(kind, expense).amountOf(expense);
 }
 
-/** 표에서 고른 계산방법과 금액을 비용 항목 필드로 바꾼다. */
 export function applyCostMethod(kind, expense, methodValue, amount) {
   const method = methodsFor(kind).find(item => item.value === methodValue) ?? methodsFor(kind)[0];
   return method.apply(expense, Math.max(0, number(amount)));

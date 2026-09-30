@@ -4,25 +4,20 @@ import { projectCounts } from './engine.js';
 import { normalizeProposalPlan } from './proposalPlan.js';
 import { number } from './utils.js';
 
-/**
- * 품의 도우미 계산. 예산 카드마다 체크한 순서대로 채우고, 1인당 한도를 넘는 금액은 남겨 다른 예산에서 체크한다.
- * 취약/비취약은 학생 수가 달라 따로 계산한다.
- * 신청 후 불참자가 부담하는 공통비는 별도 항목으로 두고, 불참 인원 × 1인당 지원액 안에서만 채운다.
- * 취약계층에 배정하지 않고 남은 금액은 수익자 부담으로 넘긴다.
- */
+// 예산마다 체크한 순서대로 채우고, 1인당 한도를 넘는 금액은 남겨 다른 예산에서 체크한다.
+// 취약/비취약은 학생 수가 달라 따로 계산한다.
+// 신청 후 불참자의 공통비는 따로 두고 불참 인원 × 1인당 지원액 안에서만 채운다.
+// 취약계층에 배정하지 않고 남은 금액은 수익자 부담으로 넘긴다.
 export const VULNERABLE_BUDGET_ID = 'education-vulnerable';
 export const EDUCATION_BUDGET_ID = 'education';
 export const STUDENT_BUDGET_ID = 'student';
 
-/** 신청 후 불참자의 공통비 항목 id. group은 'vulnerable' | 'regular'. */
+// group: 'vulnerable' | 'regular'
 export function absentLineId(group, lineId) {
   return `absent:${group}:${lineId}`;
 }
 
-/**
- * 신청 후 불참자가 부담하는 공통비 항목. 취약/비취약 불참자를 따로 둔다.
- * line = { id, lineId, group, name, date, count, perPerson, total }
- */
+// 취약/비취약 불참자를 따로 둔다.
 function absentLines(lines, counts) {
   const groups = [['vulnerable', counts.vulnerableAbsent], ['regular', counts.regularAbsent]];
   return groups.flatMap(([group, count]) => (count > 0
@@ -39,15 +34,12 @@ function absentLines(lines, counts) {
     : []));
 }
 
-/** 신청 후 불참 항목: 교육청 지원금은 같은 계층만, 기타 지원금과 수익자 부담은 어느 계층이나 넣을 수 있다. */
+// 교육청 지원금은 같은 계층만, 기타 지원금과 수익자 부담은 어느 계층이나 된다.
 export function canTakeAbsentLine(budget, absentLine) {
   return !budget.absentGroup || budget.absentGroup === absentLine.group;
 }
 
-/**
- * 예산 카드 목록. setting은 품의 도우미에서 바로 고칠 수 있는 지원 금액이다.
- *   { mode: 'perPerson' | 'total' | 'full', amount }  (full = 실비 전액, 금액 입력 없음)
- */
+// setting.mode: perPerson | total | full(실비 전액, 금액 입력 없음)
 export function proposalBudgets(project, counts) {
   const education = project.educationSupport ?? {};
   const memos = education.memos ?? {};
@@ -103,7 +95,6 @@ export function proposalBudgets(project, counts) {
   ];
 }
 
-/** 품의 도우미에서 고친 지원 금액을 사업 데이터에 반영한다(예산 관리와 같은 값). */
 export function withBudgetAmount(project, budgetId, amount) {
   const value = Math.max(0, Math.round(number(amount)));
   if (budgetId === EDUCATION_BUDGET_ID) {
@@ -120,7 +111,7 @@ export function withBudgetAmount(project, budgetId, amount) {
 
 const absentKey = (budgetId, group) => `${budgetId}:${group}`;
 
-/** 체크한 순서대로 예산을 채운다. 참여 학생 항목을 먼저, 신청 후 불참 항목을 나중에 채운다. */
+// 참여 학생 항목을 먼저, 신청 후 불참 항목을 나중에 채운다.
 function replay(budgets, lines, absent, allocations) {
   const budgetById = new Map(budgets.map(budget => [budget.id, budget]));
   const lineById = new Map(lines.map(line => [line.id, line]));
@@ -192,10 +183,7 @@ function replay(budgets, lines, absent, allocations) {
   return { results, absentResults, absentRemaining, absentUsed, poolLeft, remaining, used };
 }
 
-/**
- * 한 예산에서 신청 후 불참 학생 몫을 얼마나 썼고 얼마나 남았는지.
- * 불참 학생이 있는 계층마다 1인당 사용액을 보고, 가장 많이 쓴 계층 기준으로 보여 준다.
- */
+// 불참 학생이 있는 계층 중 1인당 가장 많이 쓴 계층을 기준으로 보여 준다.
 function absentUsage(budget, counts, absentUsed, poolLeft) {
   const groups = [['vulnerable', counts.vulnerableAbsent], ['regular', counts.regularAbsent]]
     .filter(([group, count]) => count > 0 && (!budget.absentGroup || budget.absentGroup === group));
@@ -337,7 +325,6 @@ export function buildProposal(project) {
   };
 }
 
-/** 한 예산에서 각 항목의 상태(체크 여부, 넣은 금액, 넣을 수 있는 금액). 예산 카드를 그릴 때 쓴다. */
 export function budgetChecklist(proposal, budgetId) {
   const budget = proposal.budgets.find(item => item.id === budgetId);
   const pool = budget.group === 'vulnerable' ? proposal.unassigned.vulnerable : proposal.unassigned.regular;
@@ -358,7 +345,6 @@ export function budgetChecklist(proposal, budgetId) {
   });
 }
 
-/** 한 예산에서 신청 후 불참 공통비 항목의 상태(체크 여부, 넣은 금액, 넣을 수 있는 금액). */
 export function absentChecklist(proposal, budgetId) {
   const budget = proposal.budgets.find(item => item.id === budgetId);
   const block = proposal.blocks.find(item => item.budget.id === budgetId);

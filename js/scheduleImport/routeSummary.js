@@ -1,13 +1,9 @@
 import { groupLines, nearestBy } from './pdfLayout.js';
 import { normalizeSpaces, parseMonthDay } from './scheduleText.js';
 
-/**
- * '5월 13일(수) | 학교 출발 ➡ 잠실 롯데월드 ➡ 서울올림픽파크텔(숙박)' 같은
- * '주요 경로' 줄을 일정 행으로 바꾼다. 세부 일정 표가 없는 문서에서 쓴다.
- *
- * - 화살표(➡ → ⇒ ▶)가 있는 줄만 경로로 본다.
- * - 한 날의 경로가 두 줄로 나뉘어도, 높이가 가장 가까운 날짜 칸의 날짜를 붙인다.
- */
+// 세부 일정 표가 없는 문서에서 쓴다.
+// 예: '5월 13일(수) | 학교 출발 ➡ 잠실 롯데월드 ➡ 서울올림픽파크텔(숙박)'
+// 화살표가 있는 줄만 경로로 보고, 한 날의 경로가 두 줄로 나뉘면 높이가 가장 가까운 날짜 칸을 따른다.
 const ARROW = /[➡→⇒▶➔➜]/;
 const DATE_REACH = 30;
 
@@ -15,14 +11,12 @@ function segmentsOf(text) {
   return text.split(ARROW).map(normalizeSpaces).filter(Boolean);
 }
 
-/** @param lines [{ text, monthDay }] 날짜가 이미 정해진 경로 줄 */
 function toRows(lines) {
   return lines.flatMap(line => segmentsOf(line.text).map(title => ({
     monthDay: line.monthDay, dayNumber: null, start: '', end: '', title, note: ''
   })));
 }
 
-/** PDF 글자 조각에서 경로 줄을 찾는다. */
 export function parseRouteSummaryFromLayout(pages) {
   const lines = [];
   for (const page of pages) {
@@ -39,7 +33,7 @@ export function parseRouteSummaryFromLayout(pages) {
   return toRows(lines);
 }
 
-/** 문단 텍스트(HWPX 등)에서 경로 줄을 찾는다. 날짜가 없는 줄은 앞 줄의 날짜를 이어 쓴다. */
+// 날짜가 없는 줄은 앞 줄의 날짜를 이어 쓴다.
 export function parseRouteSummaryFromLines(textLines) {
   const lines = [];
   let monthDay = null;

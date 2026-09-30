@@ -1,7 +1,3 @@
-/**
- * 일정 문서에서 자주 나오는 글자 모양(시간, 날짜, 일차, 연도)을 읽는 도우미.
- * PDF와 HWPX 해석기가 함께 쓴다. DOM이나 라이브러리에 의존하지 않는다.
- */
 const TIME = /([01]?\d|2[0-3])\s*[:：]\s*([0-5]\d)/g;
 
 function pad(value) {
@@ -12,10 +8,8 @@ export function normalizeSpaces(text) {
   return String(text ?? '').replace(/\s+/g, ' ').trim();
 }
 
-/**
- * '12:00 ~ 20:30', '06:30 ~', '~ 18:30', '21:00' 같은 시간 칸을 읽는다.
- * 물결(~) 앞의 시간은 시작, 뒤의 시간은 끝으로 본다. 시간이 없으면 null.
- */
+// '12:00 ~ 20:30', '06:30 ~', '~ 18:30', '21:00'
+// 물결 앞은 시작, 뒤는 끝
 export function parseTimeRange(text) {
   const source = String(text ?? '');
   const times = [...source.matchAll(TIME)].map(match => ({ value: `${pad(match[1])}:${match[2]}`, index: match.index }));
@@ -30,7 +24,7 @@ function validMonthDay(month, day) {
   return month >= 1 && month <= 12 && day >= 1 && day <= 31 ? { month, day } : null;
 }
 
-/** '5월 13일(수)', '5월13일', '5. 13.(수)', '5/13(수)', '5/13' → { month, day } */
+// '5월 13일(수)', '5월13일', '5. 13.(수)', '5/13(수)', '5/13' → { month, day }
 export function parseMonthDay(text) {
   const source = String(text ?? '');
   const korean = source.match(/(\d{1,2})\s*월\s*(\d{1,2})\s*일/);
@@ -43,13 +37,13 @@ export function parseMonthDay(text) {
   return null;
 }
 
-/** '제1일차', '2일차' → 1, 2 */
+// '제1일차', '2일차' → 1, 2
 export function parseDayNumber(text) {
   const match = String(text ?? '').match(/제?\s*(\d{1,2})\s*일\s*차/);
   return match ? Number(match[1]) : null;
 }
 
-/** 문서 안의 '2026년 5월', '2026. 5. 13.' 같은 표현에서 연도를 찾는다. 없으면 fallback. */
+// '2026년 5월', '2026. 5. 13.'
 export function detectYear(texts, fallback) {
   const joined = texts.join(' ');
   const withMonth = joined.match(/(20\d{2})\s*년\s*\d{1,2}\s*월/) ?? joined.match(/(20\d{2})\s*\.\s*\d{1,2}\s*\.\s*\d{1,2}/);
@@ -65,9 +59,7 @@ export function isoDate(year, monthDay) {
 
 const MEAL_TITLE = /^(조식|중식|석식)$/;
 
-/**
- * 일정 이름을 다듬는다. 상세일정이 '중식'뿐이고 비고에 '중식: 덕평휴게소'가 있으면 '중식(덕평휴게소)'로 쓴다.
- */
+// 상세일정이 '중식'뿐이고 비고가 '중식: 덕평휴게소'면 '중식(덕평휴게소)'
 export function scheduleTitle(title, note) {
   const name = normalizeSpaces(title);
   if (!MEAL_TITLE.test(name)) return name;
@@ -75,7 +67,7 @@ export function scheduleTitle(title, note) {
   return place ? `${name}(${normalizeSpaces(place[1])})` : name;
 }
 
-/** 시간이 앞 행보다 이르면 다음 날로 넘어간 것으로 본다(06:30 … 21:00 → 07:00). */
+// 06:30 … 21:00 다음에 07:00이 오면 다음 날
 export function startsNewDay(previousTime, time) {
   return Boolean(previousTime && time && time < previousTime);
 }

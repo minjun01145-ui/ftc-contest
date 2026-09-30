@@ -1,4 +1,3 @@
-/** 'YYYY-MM-DD' → '5월 13일(수)'. 형식이 맞지 않으면 빈 문자열. */
 export function koreanDateLabel(isoDate) {
   const match = String(isoDate ?? '').match(/^(\d{4})-(\d{2})-(\d{2})$/);
   if (!match) return '';

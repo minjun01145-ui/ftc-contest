@@ -3,9 +3,7 @@ import { projectCounts } from './engine.js';
 import { activeFixedCosts, fixedCostBreakdown } from './fixedCosts.js';
 import { createExpense } from './presets.js';
 
-/**
- * 인솔자용 체험처/비용 초안. 학생용 체험처와 기타비의 인솔자 몫(버림 잔액 포함)을 가져온다.
- */
+// 기타비는 인솔자 몫(버림 잔액 포함)을 가져온다.
 export function cloneExpensesForStaff(expenses) {
   return expenses.map(expense => {
     const { id: _id, ...copy } = expense;

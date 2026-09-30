@@ -13,7 +13,6 @@ function scheduleItemIsUsable(item) {
     && (String(item?.date ?? '').trim() !== '' || String(item?.name ?? '').trim() !== '');
 }
 
-/** 일정 항목의 가장 이른 날짜와 가장 늦은 날짜를 사업 기간으로 돌려줍니다. */
 export function tripScheduleDateRange(items) {
   const dates = (Array.isArray(items) ? items : [])
     .map(item => String(item?.date ?? '').trim())

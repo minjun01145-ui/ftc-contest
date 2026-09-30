@@ -1,16 +1,13 @@
 import { columnFinder, groupLines, nearestBy } from './pdfLayout.js';
 import { normalizeSpaces, parseDayNumber, parseMonthDay, parseTimeRange, scheduleTitle, startsNewDay } from './scheduleText.js';
 
-/**
- * PDF의 '세부 일정' 표(일자 | 장소 | 시간 | 상세일정 | 비고)를 행으로 복원한다.
- *
- * 1) '시간'과 '상세일정(일정·내용)' 머리글이 있는 줄을 찾아 열 경계를 정한다.
- * 2) 시간 열의 '12:00 ~ 20:30' 같은 조각 하나가 일정 한 행이다.
- * 3) 상세일정·비고 열의 글자는 높이가 가장 가까운 시간 행에 붙인다(셀 안 줄바꿈 포함).
- * 4) 일자 열의 '제1일차', '5월13일(수)'은 날짜 표시로 모아 두고,
- *    시간이 앞 행보다 이르면 다음 날로 넘어간 것으로 보고 날짜를 차례로 붙인다.
- * 표가 여러 쪽에 걸치면 머리글이 없는 쪽은 앞쪽의 열 경계를 그대로 쓴다.
- */
+// 세부 일정 표(일자 | 장소 | 시간 | 상세일정 | 비고) 복원 순서
+// 1) '시간'과 '상세일정(일정·내용)' 머리글이 있는 줄을 찾아 열 경계를 정한다.
+// 2) 시간 열의 '12:00 ~ 20:30' 같은 조각 하나가 일정 한 행이다.
+// 3) 상세일정·비고 열의 글자는 높이가 가장 가까운 시간 행에 붙인다(셀 안 줄바꿈 포함).
+// 4) 일자 열의 '제1일차', '5월13일(수)'은 날짜 표시로 모아 두고,
+//    시간이 앞 행보다 이르면 다음 날로 넘어간 것으로 보고 날짜를 차례로 붙인다.
+// 표가 여러 쪽에 걸치면 머리글이 없는 쪽은 앞쪽의 열 경계를 그대로 쓴다.
 const HEADERS = Object.freeze([
   { key: 'date', pattern: /^(일\s*자|날\s*짜|월\s*일|일\s*차)$/ },
   { key: 'place', pattern: /^(장\s*소|장소\s*\/\s*체험처)$/ },
@@ -87,11 +84,9 @@ function readPage(page, columns, headerY) {
   return { rows, markers, places };
 }
 
-/**
- * 병합한 장소 칸의 글자는 그 칸이 덮는 행들의 가운데에 있다.
- * 그래서 날마다 행을 위에서부터 장소 개수만큼 이어진 묶음으로 나누되,
- * 각 묶음의 가운데 높이가 장소 글자 높이와 가장 가깝게 나눈다.
- */
+// 병합한 장소 칸의 글자는 그 칸이 덮는 행들의 가운데에 있다.
+// 그래서 날마다 행을 위에서부터 장소 개수만큼 이어진 묶음으로 나누되,
+// 각 묶음의 가운데 높이가 장소 글자 높이와 가장 가깝게 나눈다.
 function assignPlaces(rows, places) {
   const days = new Map();
   for (const row of rows) {
@@ -137,7 +132,7 @@ function assignPlaces(rows, places) {
 
 const joinByLine = cells => normalizeSpaces([...cells].sort((left, right) => right.y - left.y || left.x - right.x).map(cell => cell.text).join(' '));
 
-/** 시간 순서로 날을 나누고, 날짜 표시를 차례로 붙인다. 개수가 맞지 않으면 가장 가까운 날짜 표시를 쓴다. */
+// 날짜 표시 개수가 날 수와 안 맞으면 가장 가까운 날짜 표시를 쓴다.
 function attachDates(rows, markers) {
   let dayIndex = 0;
   let previous = '';
@@ -157,10 +152,6 @@ function attachDates(rows, markers) {
   }
 }
 
-/**
- * @param pages [{ pageNumber, items: [{ text, x, y }] }]
- * @returns [{ monthDay, dayNumber, start, end, title, note }]
- */
 export function parseDetailedScheduleTable(pages) {
   const rows = [];
   const markers = [];

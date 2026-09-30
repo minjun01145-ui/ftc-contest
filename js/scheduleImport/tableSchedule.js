@@ -1,14 +1,8 @@
 import { normalizeSpaces, parseDayNumber, parseMonthDay, parseTimeRange, scheduleTitle, startsNewDay } from './scheduleText.js';
 
-/**
- * 셀 단위로 읽은 표(HWPX 등)에서 '세부 일정' 표를 찾아 일정 행으로 바꾼다.
- *
- * table = [{ cells: [{ col, text }] }, ...]   (col: 셀이 시작하는 열 번호)
- * - '시간'과 '상세일정(일정·내용)' 머리글이 있는 행을 머리글로 본다.
- * - 일자 칸은 여러 행을 병합하므로, 일자 칸이 있는 행부터 다음 일자 칸 전까지 같은 날이다.
- *   일자 칸이 없으면 시간이 앞 행보다 이를 때 다음 날로 넘긴다.
- * - 장소 칸도 여러 행을 병합하므로, 장소 칸이 있는 행부터 다음 장소 칸 전까지 같은 장소다.
- */
+// table = [{ cells: [{ col, text }] }] (col: 셀이 시작하는 열 번호)
+// 일자·장소 칸은 여러 행을 병합하므로 그 칸이 있는 행부터 다음 칸 전까지 같은 날/장소로 본다.
+// 일자 칸이 없으면 시간이 앞 행보다 이를 때 다음 날로 넘긴다.
 const HEADERS = Object.freeze([
   { key: 'date', pattern: /^(일\s*자|날\s*짜|월\s*일|일\s*차)$/ },
   { key: 'place', pattern: /^(장\s*소|장소\s*\/\s*체험처)$/ },
@@ -76,7 +70,6 @@ function parseTable(table) {
   return rows;
 }
 
-/** 여러 표 가운데 세부 일정 표의 행을 모두 모은다. */
 export function parseDetailedScheduleFromTables(tables) {
   return tables.flatMap(parseTable);
 }

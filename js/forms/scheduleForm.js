@@ -1,9 +1,6 @@
 import { escapeHtml } from '../utils.js';
 
-/**
- * 계획서용 '세부 일정표' (일자 | 장소 | 시간 | 상세일정 | 비고). 미리보기·한글 붙여넣기·HWPX가 함께 쓴다.
- * model = { rows: [{ time, detail, note }], days: [{ start, span, label }], places: [{ start, span, text }] }
- */
+// model = { rows: [{ time, detail, note }], days: [{ start, span, label }], places: [{ start, span, text }] }
 export const SCHEDULE_FORM_COLUMNS = Object.freeze(['일 자', '장소', '시간', '상세일정', '비고']);
 
 const WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토'];
@@ -57,7 +54,7 @@ export function scheduleFormModel(project) {
   return { rows, days, places };
 }
 
-/* ---------- HTML(화면 미리보기, 한글 붙여넣기) ---------- */
+// HTML(화면 미리보기, 한글 붙여넣기)
 
 // 한글의 HTML 붙여넣기는 CSS보다 표 속성(border, bgcolor, width)을 잘 읽으므로 둘 다 적는다.
 const WIDTHS = [11, 13, 17, 39, 20];
@@ -78,7 +75,6 @@ function td(content, { rowspan = 1, width = null, header = false, style = '', no
   return `<${tag} ${attrs} style="${LINE}${FONT}${background}padding:3px 5px;text-align:center;vertical-align:middle;${nowrap || header ? 'white-space:nowrap;' : 'white-space:normal;'}${style}">${content}</${tag}>`;
 }
 
-/** 인라인 스타일과 표 속성만 쓰는 표. 한글에 붙여넣어도 테두리·병합·음영이 남는다. */
 export function scheduleFormHtml(model, { title = '세부 일정표' } = {}) {
   const dayAt = new Map(model.days.map(day => [day.start, day]));
   const placeAt = new Map(model.places.map(place => [place.start, place]));
@@ -102,7 +98,6 @@ export function scheduleFormHtml(model, { title = '세부 일정표' } = {}) {
     + `<thead><tr>${head}</tr></thead><tbody>${body}${empty}</tbody></table>`;
 }
 
-/** 붙여넣기용 일반 글자(탭으로 칸 구분). */
 export function scheduleFormText(model) {
   const dayAt = new Map(model.days.map(day => [day.start, day]));
   const placeAt = new Map(model.places.map(place => [place.start, place]));

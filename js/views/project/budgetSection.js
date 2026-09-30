@@ -124,7 +124,6 @@ export function moveOtherSupportRow(button, direction) {
   else target.after(row);
 }
 
-/** 폼에 예산 입력칸이 없으면 null을 돌려준다. */
 export function readBudgetInputs(form, data, previous) {
   if (!data.has('regularPerPerson')) return null;
   const fullSupport = data.has('vulnerableFullSupport');

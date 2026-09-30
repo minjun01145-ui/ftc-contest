@@ -2,10 +2,7 @@ import { summarizeAttendance } from './attendance.js';
 import { fixedCostExpenses } from './fixedCosts.js';
 import { number } from './utils.js';
 
-/**
- * 계산에 쓰는 인원. 인원 화면의 입력값(project.attendance)에서 계산한다.
- * contractedAbsent: 신청 후 불참(취약 + 비취약). 계약한 뒤 빠진 학생이라 공통비를 부담할 수 있다.
- */
+// contractedAbsent(신청 후 불참)는 계약한 뒤 빠진 학생이라 공통비를 부담할 수 있다.
 export function projectCounts(project) {
   const s = summarizeAttendance(project.attendance, project.totalStudents);
   const contractedAbsent = s.vulnerableAbsent + s.regularAbsent;
@@ -22,12 +19,10 @@ export function projectCounts(project) {
   };
 }
 
-/** 학생 비용 항목의 인원: 참여 학생, 또는 참여 + 신청 후 불참(학생 총액) */
 function quantityFor(expense, counts) {
   return expense.quantityBase === 'participantsPlusAbsent' ? counts.participantsPlusAbsent : counts.participants;
 }
 
-/** 학생 비용 항목 하나: 1인당 금액 × 인원 */
 export function calculateExpense(expense, project) {
   const studentQty = quantityFor(expense, projectCounts(project));
   const unit = Math.max(0, number(expense.unitAmount));

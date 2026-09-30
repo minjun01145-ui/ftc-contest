@@ -7,10 +7,7 @@ function countInput(value) {
   return text === '' ? 0 : Number(text);
 }
 
-/**
- * 폼의 인원 입력칸을 읽는다. 폼에 인원 입력칸이 없으면 null.
- * 값은 검사하기 전의 숫자 그대로 돌려준다(저장 전에 attendanceIssues로 검사한다).
- */
+// 검사는 저장 전에 attendanceIssues에서 한다.
 export function readHeadcountInputs(data) {
   if (!data.has('applicants')) return null;
   return {
@@ -30,7 +27,6 @@ export function participantsText({ regularParticipants, vulnerableParticipants, 
   return `${participants}명 (비취약계층 ${regularParticipants}명, 취약계층 ${vulnerableParticipants}명)`;
 }
 
-/** 입력하는 동안 불참(미신청)과 실제 참여 인원을 바로 다시 계산해 보여 준다. */
 export function refreshHeadcountSummary(form) {
   const summary = form?.querySelector('[data-participants-summary]');
   if (!summary) return;
