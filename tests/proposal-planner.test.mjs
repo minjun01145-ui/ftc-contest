@@ -17,7 +17,7 @@ import {
 } from '../js/proposalPlanner.js';
 import { withHeadcount } from './helpers.mjs';
 
-// 실제 비용 산출 근거자료와 같은 조건(참여 70명, 취약계층 17명, 신청 후 불참 1명, 인솔자 8명)
+// 비용 산출 예시(참여 70명, 취약계층 17명, 신청 후 불참 1명, 인솔자 8명)
 function excelProject() {
   const project = createProject('2학년 수학여행');
   withHeadcount(project, { total: 72, participants: 70, vulnerable: 17, regularAbsent: 1, chaperones: 8 });

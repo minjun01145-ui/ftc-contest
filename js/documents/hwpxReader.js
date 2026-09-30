@@ -2,8 +2,7 @@ import { loadScript } from '../services/scriptLoader.js';
 import { DocumentReadError } from './documentReadError.js';
 
 /**
- * HWPX(한글 문서의 압축 XML 형식)에서 표와 문단을 읽는다. 저장소에 포함한 JSZip(vendor/jszip)으로
- * 브라우저 안에서만 읽으며, 파일을 밖으로 보내지 않는다.
+ * HWPX(한글 문서의 압축 XML 형식)에서 표와 문단을 읽는다(vendor/jszip 사용).
  *
  * 결과: { tables: [[{ cells: [{ col, text }] }]], paragraphs: [text] }
  *   - 표 안의 표(중첩 표)는 따로 하나의 표로 읽는다.

@@ -7,7 +7,7 @@ import { EDUCATION_BUDGET_ID, STUDENT_BUDGET_ID, VULNERABLE_BUDGET_ID, absentLin
 import { buildSettlementReport, dayCount, periodText } from '../js/settlementReport.js';
 import { withHeadcount } from './helpers.mjs';
 
-// 실제로 제출한 정산 서식의 한 줄과 같은 조건
+// 정산 서식 한 줄 예시
 function settledProject() {
   const project = createProject('2학년 수학여행');
   Object.assign(project, { grade: 2, executionMode: '숙박형', startDate: '2026-05-13', endDate: '2026-05-15' });

@@ -13,7 +13,7 @@ export class ScheduleDocumentImportError extends Error {
 }
 
 /**
- * 일정 문서 가져오기. 파일은 이 컴퓨터(브라우저) 안에서만 읽고 어디로도 보내지 않는다.
+ * 일정 문서 가져오기.
  *
  * PDF  : 글자 위치로 세부 일정 표를 복원하고, 없으면 '주요 경로(➡)' 줄을 읽는다.
  * HWPX : 표를 셀 단위로 읽어 같은 규칙을 적용한다.

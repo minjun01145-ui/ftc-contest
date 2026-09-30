@@ -1,13 +1,8 @@
 import { number, uid } from './utils.js';
 
 /**
- * 예산 입력 모델.
- *
- * - 교육청 지원금: project.educationSupport (비취약 1인당, 취약 1인당/실비 전액, 교부액) + 칸별 메모
- * - 기타 지원금:   project.otherSupports = [{ id, name, source, mode, amount, memo }]
- *   source: 'school'(학교 예산) 또는 'external'(지자체 등 외부 지원) — 정산 서식의 학교부담/외부지원 칸을 가른다.
- *   학교 자체지원금, 문화예술체험활동비, 지자체 지원금처럼 학교마다 여러 개일 수 있다.
- *   모두 비취약계층 참여 학생에게 쓰는 돈으로 본다(취약계층은 교육청 지원금으로 처리).
+ * 예산 입력. 교육청 지원금은 project.educationSupport, 그 밖의 지원금은 project.otherSupports.
+ * otherSupports의 source('school' | 'external')로 정산 서식의 학교부담/외부지원 칸을 나눈다.
  */
 export const OTHER_SUPPORT_MODES = Object.freeze({
   perPerson: '1인당',

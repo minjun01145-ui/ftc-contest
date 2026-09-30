@@ -6,16 +6,8 @@ import { number } from './utils.js';
 import { summarizeAttendance } from './attendance.js';
 
 /**
- * 검증 도우미. 입력한 값이 서로 맞는지 여러 방법으로 다시 계산해 본다.
- * 저장을 막지 않고 결과만 보여 준다.
- *
- * check = {
- *   id, title,
- *   status: 'ok' | 'warn' | 'fail' | 'skip',
- *   lines: ['계산식 한 줄', ...],   // 사람이 손으로 따라 계산할 수 있게
- *   result: '결론 한 줄',
- *   items: ['확인할 것', ...]       // 선택
- * }
+ * 검증 도우미. 입력한 값을 여러 방법으로 다시 계산해 서로 맞는지 본다(저장은 막지 않음).
+ * check = { id, title, status: 'ok' | 'warn' | 'fail' | 'skip', lines, result, items }
  */
 const won = value => `${Math.round(number(value)).toLocaleString('ko-KR')}원`;
 const sum = (items, pick) => items.reduce((total, item) => total + (Number(pick(item)) || 0), 0);

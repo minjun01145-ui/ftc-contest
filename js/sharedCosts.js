@@ -3,12 +3,7 @@ import { normalizeFixedCosts } from './fixedCosts.js';
 
 /**
  * 다른 학년과 함께 계산하는 기타비(버스비 등).
- *
- * 기타비 항목의 sharedProjectIds에 함께 탈 사업을 적어 두면, 그 사업들의 인원을 더해 sharedPeople로 둔다.
- * 연결한 사업의 인원을 고치면 저장할 때마다 다시 세므로 자동으로 따라온다.
- * 연결은 양쪽에 걸린다: 3학년에서 1학년과 함께 계산하면 1학년의 같은 항목도 3학년과 함께 계산하고 계약액을 맞춘다.
- * 인원은 그 사업의 같은 항목 설정을 따른다(인솔자도 함께 부담이면 인솔자, 공통비이고
- * 신청 후 불참자 공통비 부담이면 신청 후 불참자도 센다).
+ * sharedProjectIds에 연결한 사업의 인원을 더해 sharedPeople로 두고, 저장할 때마다 다시 센다. 연결은 양쪽에 건다.
  */
 function sameEntry(entry, target) {
   return target.builtin ? entry.builtin === target.builtin : entry.label === target.label;

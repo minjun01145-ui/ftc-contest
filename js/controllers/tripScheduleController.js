@@ -12,7 +12,6 @@ import {
 
 /**
  * 사업정보의 체험학습 일정 표 동작(문서 불러오기, 행 추가, 저장).
- * 앱 상태와 화면 갱신은 app.js가 넘겨 주는 함수로만 다룬다.
  */
 export function createTripScheduleController({
   documentImport,

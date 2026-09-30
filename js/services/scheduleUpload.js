@@ -23,7 +23,7 @@ export function validateScheduleFile(file) {
     return { ok: false, code: 'DOCUMENT_MIME_MISMATCH' };
   }
 
-  // HWPX MIME types vary by browser and operating system; the server also checks its ZIP signature.
+  // HWPX의 MIME 형식은 브라우저·운영체제마다 달라 확장자로 판단한다.
   return { ok: true, file };
 }
 

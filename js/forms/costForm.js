@@ -6,15 +6,8 @@ import { EDUCATION_BUDGET_ID, STUDENT_BUDGET_ID, VULNERABLE_BUDGET_ID, buildProp
 import { escapeHtml, number } from '../utils.js';
 
 /**
- * 가정통신문·계획서에 넣는 '현장체험학습 경비 산출내역' (일자 | 경비 산출).
- * - 날짜별 체험처 비용을 '항목: 금액' 목록으로, 기타비(숙박비·보험·차량비 등)는 항목마다 한 줄로 둔다.
- * - 1인당 경비와 지원금·학부모 부담 안내(※)를 붙인다.
- *
- * model = {
- *   rows: [{ label: [줄], items: [줄], kind: 'date' | 'fixed' }],
- *   perPerson,
- *   notes: ['※ ...']
- * }
+ * 가정통신문·계획서용 '현장체험학습 경비 산출내역' (일자 | 경비 산출).
+ * model = { rows: [{ label, items, kind: 'date' | 'fixed' }], perPerson, notes }
  */
 export const COST_FORM_TITLE = '현장체험학습 경비 산출내역';
 

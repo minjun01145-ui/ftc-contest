@@ -1,14 +1,8 @@
 import { escapeHtml } from '../utils.js';
 
 /**
- * 계획서에 넣는 '세부 일정표' (일자 | 장소 | 시간 | 상세일정 | 비고).
- * 사업정보의 체험학습 일정에서 만들며, 화면 미리보기·한글 붙여넣기(HTML)·HWPX 파일이 모두 이 모양을 쓴다.
- *
- * model = {
- *   rows: [{ time, detail: [줄], note: [줄] }],          // 본문 한 줄씩
- *   days: [{ start, span, label: ['제1일차', '5/13(수)'] }],  // 일자 칸(병합)
- *   places: [{ start, span, text }]                         // 장소 칸(병합)
- * }
+ * 계획서용 '세부 일정표' (일자 | 장소 | 시간 | 상세일정 | 비고). 미리보기·한글 붙여넣기·HWPX가 함께 쓴다.
+ * model = { rows: [{ time, detail, note }], days: [{ start, span, label }], places: [{ start, span, text }] }
  */
 export const SCHEDULE_FORM_COLUMNS = Object.freeze(['일 자', '장소', '시간', '상세일정', '비고']);
 

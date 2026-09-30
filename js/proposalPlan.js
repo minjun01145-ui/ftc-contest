@@ -1,10 +1,6 @@
 /**
- * 품의 도우미에서 사용자가 정한 값만 저장한다. 금액은 저장하지 않고 매번 다시 계산한다.
- *
- * project.proposalPlan = {
- *   allocations: [{ budgetId, lineId }, ...]   // 예산 카드에서 항목을 체크한 순서
- * }
- * 체크한 순서대로 다시 채워 보기 때문에, 단가나 예산이 바뀌어도 금액이 저절로 맞춰진다.
+ * 품의 도우미에서 체크한 항목(allocations: [{ budgetId, lineId }], 체크한 순서)만 저장한다.
+ * 금액은 저장하지 않고 매번 다시 계산한다.
  */
 export function createProposalPlan() {
   return { allocations: [] };

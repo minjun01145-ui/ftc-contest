@@ -3,10 +3,7 @@ import { createExpense, createProject, createTripScheduleItem, normalizeState } 
 import { absentLineId, EDUCATION_BUDGET_ID, STUDENT_BUDGET_ID, VULNERABLE_BUDGET_ID } from './proposalPlanner.js';
 import { syncExpensesFromTripSchedule } from './tripSchedule.js';
 
-/**
- * 시연용 예시 자료. 학교·일정·금액은 모두 지어낸 값이며 개인정보가 없다.
- * 첫 화면의 '예시 불러오기'와 테스트가 함께 쓴다.
- */
+/** 시연용 예시 자료(가상의 학교). 첫 화면의 '예시 사업 불러오기'와 테스트에서 쓴다. */
 const SCHEDULE = [
   ['2026-05-13', '부산', '07:00', '07:20', '학교 정문 출발', '인원 점검'],
   ['2026-05-13', '부산', '07:20', '11:30', '이동(휴게소 1회)', ''],

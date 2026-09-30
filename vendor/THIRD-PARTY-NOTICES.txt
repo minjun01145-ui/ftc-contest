@@ -1,0 +1,23 @@
+포함된 오픈소스 라이브러리
+
+PDF.js (pdfjs-dist) 6.3.289
+  폴더: pdfjs/
+  라이선스: Apache License 2.0 (pdfjs/LICENSE)
+
+PDF.js CMap (pdfjs-dist 6.3.289 배포본)
+  폴더: pdfjs/cmaps/
+  라이선스: Adobe BSD 3-Clause 형식 (pdfjs/cmaps/LICENSE)
+
+JSZip 3.10.2
+  폴더: jszip/
+  라이선스: MIT 또는 GPLv3 중 MIT 선택 (jszip/LICENSE.markdown)
+
+JSZip 번들(jszip/jszip.min.js)에 포함된 구성요소
+  pako          MIT (jszip/licenses/pako-MIT.txt), zlib 고지 (jszip/licenses/pako-zlib.txt)
+                https://github.com/nodeca/pako
+  lie           MIT (jszip/licenses/lie-MIT.md)
+                https://github.com/calvinmetcalf/lie
+  immediate     MIT (jszip/licenses/immediate-MIT.txt)
+                https://github.com/calvinmetcalf/immediate
+  setImmediate  MIT (jszip/licenses/setImmediate-MIT.txt)
+                https://github.com/YuzuJS/setImmediate

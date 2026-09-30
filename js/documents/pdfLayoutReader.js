@@ -1,8 +1,7 @@
 import { DocumentReadError } from './documentReadError.js';
 
 /**
- * PDF 파일에서 쪽마다 글자 조각과 위치를 읽는다. 저장소에 포함한 PDF.js(vendor/pdfjs)로
- * 브라우저 안에서만 읽으며, 파일을 밖으로 보내지 않는다.
+ * PDF 파일에서 쪽마다 글자 조각과 위치를 읽는다(vendor/pdfjs 사용).
  *
  * 결과: [{ pageNumber, items: [{ text, x, y }] }]  (x, y는 PDF 좌표, y가 클수록 위쪽)
  */

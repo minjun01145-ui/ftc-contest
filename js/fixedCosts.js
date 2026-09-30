@@ -1,23 +1,10 @@
 import { number, uid } from './utils.js';
 
 /**
- * 체험처/비용 화면의 '기타비'(project.fixedCosts).
- *
- * project.fixedCosts = [{ id, builtin, label, mode, amount, includeChaperones, roundTo10, commonCost, memo }, ...]
- * - 기본 항목(버스비·숙소비·보험비)은 builtin에 키가 있다. 삭제하면 removed로 표시해 계산에서 빼고, 다시 추가할 수 있다.
- *   사용자가 항목을 더 추가할 수 있다.
- * - mode 'perPerson' : 입력한 1인당 금액을 그대로 쓴다.
- * - mode 'total'     : 전체 계약액을 인원으로 나눠 1인당 금액을 만든다.
- *     includeChaperones : 학생 + 인솔자 수로 나눈다(아니면 학생 수만).
- *     roundTo10         : 1인당 금액의 1원 단위를 버린다(10원 단위로 맞춤).
- *   나누고 남은 금액(인솔자 몫, 버림 잔액)은 학생 부담에서 빠지고 인솔자 비용으로 넘어간다.
- *     sharedPeople : 다른 학년과 함께 계산. 1·3학년이 버스를 같이 타는 경우처럼 다른 사업 인원을 더해서 나눈다.
- *                    더한 인원 몫은 이 사업 비용이 아니다. sharedNote에 어디서 가져왔는지 적어 둔다.
- *     sharedProjectIds : 함께 계산하는 내 사업. 그 사업 인원이 바뀌면 sharedPeople이 따라 바뀐다(sharedCosts.js).
- * - commonCost : 공통비. 인원 화면의 '신청 후 불참자 공통비 부담'을 체크하면 신청 후 불참자도 학생 수에 들어간다.
- *
- * 예) 버스비 9,000,000원 ÷ (학생 71명 + 인솔자 8명) = 113,924원 → 113,920원
- *     학생 71명 × 113,920원 = 8,088,320원, 인솔자 8명 × 113,920원 = 911,360원, 버림 잔액 320원
+ * 기타비(project.fixedCosts): 버스비·숙소비·보험비 등.
+ * mode 'perPerson'은 1인당 금액, 'total'은 계약액을 인원으로 나눈다(includeChaperones, roundTo10).
+ * 나누고 남은 금액(인솔자 몫, 버림 잔액)은 인솔자 비용으로 넘긴다.
+ * sharedPeople, sharedProjectIds: 다른 학년과 함께 계산할 때 더하는 인원(sharedCosts.js).
  */
 export const FIXED_COST_MODES = Object.freeze({
   perPerson: '1인당 금액',
@@ -176,10 +163,7 @@ export function fixedCostExpenses(project, counts) {
     });
 }
 
-/**
- * 전체 계약액에서 학생 몫을 빼고 남은 금액: 인솔자 몫과 버림 잔액. 인솔자 비용으로 처리한다.
- * 예) 버스비 → 인솔자 8명 × 113,920원 = 911,360원, 버림 잔액 320원
- */
+/** 전체 계약액에서 학생 몫을 빼고 남은 금액(인솔자 몫과 버림 잔액). 인솔자 비용으로 처리한다. */
 export function fixedCostStaffShares(project, counts) {
   return activeFixedCosts(project?.fixedCosts)
     .filter(entry => entry.amount > 0 && entry.mode === 'total')

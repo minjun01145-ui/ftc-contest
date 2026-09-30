@@ -4,13 +4,7 @@ import { activeFixedCosts, fixedCostBreakdown } from './fixedCosts.js';
 import { createExpense } from './presets.js';
 
 /**
- * 체험처/비용(인솔자용) 초안.
- * 1) 학생용 체험처를 그대로 가져와 '1인당 금액(인솔자 수 × 단가)'으로 바꾼다.
- * 2) 기타비에서 인솔자 몫을 만든다.
- *    - 1인당 금액 기타비(숙소비·보험비 등)          → 같은 단가를 인솔자 1인당 금액으로
- *    - 전체 계약액 + 인솔자도 함께 부담(버스비 등) → 학생과 같은 1인당 금액을 인솔자 1인당 금액으로
- *    - 전체 계약액에서 버리고 남은 금액            → '○○ 버림 잔액' 총액
- * 사용자는 이 초안을 보고 고치면 된다.
+ * 인솔자용 체험처/비용 초안. 학생용 체험처와 기타비의 인솔자 몫(버림 잔액 포함)을 가져온다.
  */
 export function cloneExpensesForStaff(expenses) {
   return expenses.map(expense => {
