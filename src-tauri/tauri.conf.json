@@ -1,6 +1,6 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
-  "productName": "FTC",
+  "productName": "현장체험학습 비용관리 도우미",
   "version": "1.0.0",
   "identifier": "kr.fieldtrip.ftc",
   "build": {
@@ -11,7 +11,7 @@
   "app": {
     "windows": [
       {
-        "title": "현장체험학습 비용 관리",
+        "title": "현장체험학습 비용관리 도우미",
         "width": 1400,
         "height": 900,
         "minWidth": 1000,

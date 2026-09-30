@@ -14,5 +14,5 @@ const rows = meta.packages
   .sort();
 
 writeFileSync(`${root}/src-tauri/THIRD-PARTY-CRATES.txt`,
-  `FTC.exe 빌드에 쓰인 Rust 구성요소 (${rows.length}개, 빌드 전용 포함)\n이름 버전\t라이선스\t출처\n\n${rows.join('\n')}\n`);
+  `현장체험학습 비용관리 도우미.exe 빌드에 쓰인 Rust 구성요소 (${rows.length}개, 빌드 전용 포함)\n이름 버전\t라이선스\t출처\n\n${rows.join('\n')}\n`);
 console.log(`${rows.length}개 기록`);

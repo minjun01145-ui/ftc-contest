@@ -1,7 +1,7 @@
 {
   "name": "fieldtrip-cost-manager",
   "version": "1.0.0",
-  "description": "현장체험학습 비용 관리",
+  "description": "현장체험학습 비용관리 도우미",
   "private": true,
   "type": "module",
   "scripts": {
