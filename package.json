@@ -6,6 +6,12 @@
   "type": "module",
   "scripts": {
     "serve": "python -m http.server 8000",
-    "test": "node --test tests/*.test.mjs"
+    "test": "node --test tests/*.test.mjs",
+    "build:web": "node scripts/build-web.mjs",
+    "dev": "tauri dev",
+    "build:exe": "tauri build --no-bundle && node scripts/collect-exe.mjs"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.12.0"
   }
 }

@@ -1,0 +1,25 @@
+[package]
+name = "ftc"
+version = "1.0.0"
+description = "현장체험학습 비용 관리"
+license = "MIT"
+edition = "2021"
+rust-version = "1.77"
+
+[lib]
+name = "ftc_lib"
+crate-type = ["rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+
+# exe 크기를 줄인다.
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = "s"
+panic = "abort"
+strip = true

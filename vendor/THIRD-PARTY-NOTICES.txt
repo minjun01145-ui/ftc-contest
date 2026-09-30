@@ -21,3 +21,18 @@ JSZip 번들(jszip/jszip.min.js)에 포함된 구성요소
                 https://github.com/calvinmetcalf/immediate
   setImmediate  MIT (jszip/licenses/setImmediate-MIT.txt)
                 https://github.com/YuzuJS/setImmediate
+
+실행파일(FTC.exe) 구성
+
+Tauri 2
+  용도: 화면(HTML/JS)을 Windows 실행파일 하나로 묶음
+  라이선스: MIT 또는 Apache License 2.0 중 MIT 선택
+  https://github.com/tauri-apps/tauri
+
+Tauri가 사용하는 Rust 구성요소
+  목록: src-tauri/THIRD-PARTY-CRATES.txt (이름, 버전, 라이선스, 출처)
+  모두 MIT, Apache-2.0, BSD, Zlib, Unicode-3.0, MPL-2.0 등 배포·사용에 제한이 없는 라이선스
+  MPL-2.0 구성요소(cssparser, selectors 등)는 수정 없이 사용하며, 원본 소스는 목록의 출처에서 받을 수 있음
+
+Microsoft Edge WebView2 Runtime
+  Windows 11에 기본으로 들어 있는 구성요소를 사용하며 exe에 포함하지 않음
