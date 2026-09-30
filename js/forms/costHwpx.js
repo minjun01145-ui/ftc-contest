@@ -1,10 +1,7 @@
 import { COST_FORM_TITLE, costFormText } from './costForm.js';
-import { buildHwpx, downloadBlob, escapeXml } from './hwpxPackage.js';
+import { buildHwpx, escapeXml } from './hwpxPackage.js';
 
-/**
- * 경비 산출내역을 한글 파일(HWPX)로 만든다. 견본(templates/cost-hwpx)의 글꼴·테두리·글머리표·쪽 테두리를 쓴다.
- * 표는 글자처럼 취급하지 않아 길면 다음 쪽으로 이어지고 머리글 줄이 반복된다.
- */
+// 표를 글자처럼 취급하지 않아야 길 때 다음 쪽으로 이어지고 머리글 줄이 반복된다.
 const WIDTHS = [11635, 36447];
 const TABLE_WIDTH = WIDTHS[0] + WIDTHS[1];
 const HEADER_HEIGHT = 1325;
@@ -50,7 +47,6 @@ function cell({ col, row, colSpan = 1, width, height, fill, paragraphs, margin =
 
 const heightFor = lines => LINE_HEIGHT + EXTRA_LINE * (lines - 1);
 
-/** 표(hp:tbl) XML. model은 costFormModel()의 결과. */
 export function costTableXml(model, { id = 1207592526 } = {}) {
   const rows = [];
   rows.push([
@@ -97,8 +93,4 @@ export function buildCostHwpx(model, { title = COST_FORM_TITLE } = {}) {
     previewText: `${COST_FORM_TITLE}\n${costFormText(model)}`,
     title
   });
-}
-
-export async function downloadCostHwpx(model, filename, options) {
-  downloadBlob(await buildCostHwpx(model, options), filename);
 }

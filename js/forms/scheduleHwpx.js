@@ -1,12 +1,8 @@
-import { buildHwpx, downloadBlob, escapeXml } from './hwpxPackage.js';
+import { buildHwpx, escapeXml } from './hwpxPackage.js';
 import { SCHEDULE_FORM_COLUMNS, scheduleFormText } from './scheduleForm.js';
 
-/**
- * 세부 일정표를 한글 파일(HWPX)로 만든다.
- * 견본 파일(templates/schedule-hwpx)의 글꼴·테두리·쪽 설정을 그대로 쓰고, 표만 일정에 맞게 새로 만든다.
- * 줄 배치(linesegarray)는 넣지 않는다. 한글이 파일을 열 때 다시 계산한다.
- * 표는 글자처럼 취급하지 않는다(treatAsChar=0). 그래야 표가 길면 다음 쪽으로 나뉘고 머리글 줄이 반복된다.
- */
+// 줄 배치(linesegarray)는 넣지 않는다. 한글이 파일을 열 때 다시 계산한다.
+// treatAsChar=0이어야 표가 길 때 다음 쪽으로 나뉘고 머리글 줄이 반복된다.
 
 // 견본 표의 열 너비와 행 높이(HWPUNIT, 1/7200인치)
 const WIDTHS = [5137, 5846, 7560, 18617, 8897];
@@ -61,7 +57,6 @@ function fillFor(column, firstRow, lastRow) {
   return set.inner;
 }
 
-/** 표(hp:tbl) XML. model은 scheduleFormModel()의 결과. */
 export function scheduleTableXml(model, { id = 1207592517 } = {}) {
   const rows = model.rows.length ? model.rows : [{ time: '', detail: [''], note: [] }];
   const days = model.rows.length ? model.days : [{ start: 0, span: 1, label: [''] }];
@@ -111,15 +106,10 @@ export function scheduleTableXml(model, { id = 1207592517 } = {}) {
     + '</hp:tbl>';
 }
 
-/** HWPX 파일 내용(Blob). model은 scheduleFormModel()의 결과. */
 export function buildScheduleHwpx(model, { title = '세부 일정표' } = {}) {
   return buildHwpx('schedule-hwpx', {
     tableXml: scheduleTableXml(model),
     previewText: `세부 일정표\n${scheduleFormText(model)}`,
     title
   });
-}
-
-export async function downloadScheduleHwpx(model, filename, options) {
-  downloadBlob(await buildScheduleHwpx(model, options), filename);
 }

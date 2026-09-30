@@ -2,20 +2,19 @@ import { PROJECT_SECTION, normalizeProjectSection } from './projectSections.js';
 import { createProject } from './presets.js';
 import { attendanceIssues } from './attendance.js';
 import { createLocalScheduleImportService } from './services/localScheduleImport.js';
+import { saveBlob } from './services/saveFile.js';
 import { createProposalController } from './controllers/proposalController.js';
 import { createTripScheduleController } from './controllers/tripScheduleController.js';
 import { propagateSharedLinks } from './sharedCosts.js';
 import { buildStaffDraft } from './staffDraft.js';
 import { copyRichText, tableForPaste } from './forms/clipboard.js';
 import { scheduleFormHtml, scheduleFormModel, scheduleFormText } from './forms/scheduleForm.js';
-import { downloadScheduleHwpx } from './forms/scheduleHwpx.js';
+import { buildScheduleHwpx } from './forms/scheduleHwpx.js';
 import { costFormHtml, costFormModel, costFormText } from './forms/costForm.js';
-import { downloadCostHwpx } from './forms/costHwpx.js';
-import { downloadBlob } from './forms/hwpxPackage.js';
+import { buildCostHwpx } from './forms/costHwpx.js';
 import { portalItemsFile } from './forms/portalItems.js';
 import { buildProposal } from './proposalPlanner.js';
 import { getState, persistState, replaceState, updateState } from './state.js';
-import { downloadJson } from './utils.js';
 import {
   addExpenseRow,
   moveExpenseRow,
@@ -54,7 +53,6 @@ let currentPage = HOME_PAGE;
 let dirty = false;
 let messageTimer;
 
-// 저장하지 않은 변경이 있으면 저장 버튼을 눈에 띄게 바꾼다(body.has-unsaved).
 function setDirty(value) {
   dirty = value;
   document.body.classList.toggle('has-unsaved', value);
@@ -166,7 +164,6 @@ function goTo(page) {
   render();
 }
 
-
 function deleteProject(projectId) {
   const project = getState().projects.find(item => item.id === projectId);
   if (!project) return;
@@ -186,8 +183,6 @@ function deleteProject(projectId) {
   showMessage('사업을 삭제했습니다.');
 }
 
-// 저장된 내용으로 새 사업 '○○ (복사)'를 만든다.
-/** 시연용 예시 사업을 추가한다. 학교명이 비어 있으면 예시 학교 정보도 채운다. */
 function addSampleProject() {
   if (!canDiscardChanges()) return;
   const project = createSampleProject();
@@ -333,6 +328,11 @@ main.addEventListener('click', event => {
     return;
   }
 
+  if (action === 'remove-schedule-item') {
+    tripSchedule.removeRow(button);
+    return;
+  }
+
   if (action === 'save-trip-schedule' && form) {
     saveProject(form, '사업정보를 저장했습니다.');
     return;
@@ -379,9 +379,10 @@ main.addEventListener('click', event => {
     if (!project) return;
     button.disabled = true;
     const filename = `${project.title || '체험학습'}_세부일정표.hwpx`.replace(/[\\/:*?"<>|]/g, '_');
-    downloadScheduleHwpx(scheduleFormModel(project), filename)
-      .then(() => showMessage('세부 일정표 HWPX 파일을 만들었습니다.'))
-      .catch(error => showMessage(`파일을 만들지 못했습니다: ${error.message}`))
+    buildScheduleHwpx(scheduleFormModel(project))
+      .then(blob => saveBlob(blob, filename))
+      .then(saved => { if (saved) showMessage('세부 일정표 HWPX 파일을 저장했습니다.'); })
+      .catch(error => showMessage(`파일을 만들지 못했습니다: ${error.message ?? error}`))
       .finally(() => { button.disabled = false; });
     return;
   }
@@ -399,9 +400,10 @@ main.addEventListener('click', event => {
     if (!project) return;
     button.disabled = true;
     const filename = `${project.title || '체험학습'}_경비산출내역.hwpx`.replace(/[\\/:*?"<>|]/g, '_');
-    downloadCostHwpx(costFormModel(project), filename)
-      .then(() => showMessage('경비 산출내역 HWPX 파일을 만들었습니다.'))
-      .catch(error => showMessage(`파일을 만들지 못했습니다: ${error.message}`))
+    buildCostHwpx(costFormModel(project))
+      .then(blob => saveBlob(blob, filename))
+      .then(saved => { if (saved) showMessage('경비 산출내역 HWPX 파일을 저장했습니다.'); })
+      .catch(error => showMessage(`파일을 만들지 못했습니다: ${error.message ?? error}`))
       .finally(() => { button.disabled = false; });
     return;
   }
@@ -413,8 +415,9 @@ main.addEventListener('click', event => {
     const budget = proposalData.budgets.find(item => item.id === button.dataset.budgetId);
     if (!budget) return;
     const filename = `${project.title || '체험학습'}_품목내역_${budget.name}.xls`.replace(/[\\/:*?"<>|]/g, '_');
-    downloadBlob(new Blob([portalItemsFile(proposalData, budget.id)], { type: 'application/vnd.ms-excel' }), filename);
-    showMessage(`${budget.name} 품목내역 파일을 만들었습니다. 업무포털에서 이 예산을 고르고 올리세요.`);
+    saveBlob(new Blob([portalItemsFile(proposalData, budget.id)], { type: 'application/vnd.ms-excel' }), filename)
+      .then(saved => { if (saved) showMessage(`${budget.name} 품목내역 파일을 저장했습니다. 업무포털에서 이 예산을 고르고 올리세요.`); })
+      .catch(error => showMessage(`파일을 저장하지 못했습니다: ${error.message ?? error}`));
     return;
   }
 
@@ -554,12 +557,14 @@ exportBtn.addEventListener('click', () => {
     alert('저장하지 않은 변경사항이 있습니다. 먼저 저장해 주세요.');
     return;
   }
-  // 기본 파일 이름: 내보낸 날짜와 시각(예: 2026-09-29-2145.json)
+  // 예: 2026-09-29-2145.json
   const now = new Date();
   const pad = value => String(value).padStart(2, '0');
   const stamp = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}-${pad(now.getHours())}${pad(now.getMinutes())}`;
-  downloadJson(`${stamp}.json`, getState());
-  showMessage('저장 파일을 만들었습니다.');
+  const blob = new Blob([JSON.stringify(getState(), null, 2)], { type: 'application/json;charset=utf-8' });
+  saveBlob(blob, `${stamp}.json`)
+    .then(saved => { if (saved) showMessage('저장 파일을 만들었습니다.'); })
+    .catch(error => showMessage(`파일을 저장하지 못했습니다: ${error.message ?? error}`));
 });
 
 importInput.addEventListener('change', async () => {

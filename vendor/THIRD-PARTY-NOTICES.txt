@@ -22,12 +22,17 @@ JSZip 번들(jszip/jszip.min.js)에 포함된 구성요소
   setImmediate  MIT (jszip/licenses/setImmediate-MIT.txt)
                 https://github.com/YuzuJS/setImmediate
 
-실행파일(FTC.exe) 구성
+실행파일(현장체험학습 비용관리 도우미.exe) 구성
 
 Tauri 2
   용도: 화면(HTML/JS)을 Windows 실행파일 하나로 묶음
   라이선스: MIT 또는 Apache License 2.0 중 MIT 선택
   https://github.com/tauri-apps/tauri
+
+Tauri 대화상자 플러그인(tauri-plugin-dialog) 2.8.0
+  용도: 파일을 저장할 때 '다른 이름으로 저장' 창을 띄움
+  라이선스: MIT 또는 Apache License 2.0 중 MIT 선택
+  https://github.com/tauri-apps/plugins-workspace
 
 Tauri가 사용하는 Rust 구성요소
   목록: src-tauri/THIRD-PARTY-CRATES.txt (이름, 버전, 라이선스, 출처)

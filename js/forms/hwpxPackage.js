@@ -1,9 +1,6 @@
 import { loadScript } from '../services/scriptLoader.js';
 
-/**
- * 견본 한글 파일(templates/*-hwpx)로 HWPX 파일을 만든다.
- * 견본의 글꼴·테두리·쪽 설정(header.xml)과 표 앞뒤 부분(section-head/tail)을 그대로 쓰고, 표만 새로 넣는다.
- */
+// 견본(templates/*-hwpx)의 header.xml과 표 앞뒤 부분(section-head/tail)은 그대로 쓰고 표만 새로 넣는다.
 const JSZIP_URL = new URL('../../vendor/jszip/jszip.min.js', import.meta.url).href;
 
 const TEMPLATE_FILES = ['mimetype', 'version.xml', 'settings.xml', 'Contents/header.xml', 'Contents/content.hpf',
@@ -34,10 +31,6 @@ function contentHpf(template, title) {
     .replace(/(name="ModifiedDate" content="text">)[^<]*/, `$1${now}`);
 }
 
-/**
- * HWPX 파일 내용(Blob).
- * tableXml: 넣을 표(hp:tbl), previewText: 파일 미리보기 글자, title: 문서 제목
- */
 export async function buildHwpx(templateName, { tableXml, previewText = '', title = '' }) {
   const JSZip = await loadJsZip();
   const text = await templateTexts(templateName);
@@ -55,15 +48,4 @@ export async function buildHwpx(templateName, { tableXml, previewText = '', titl
   add('META-INF/container.rdf', text['META-INF/container.rdf']);
   add('Contents/content.hpf', contentHpf(text['Contents/content.hpf'], title));
   return zip.generateAsync({ type: 'blob', mimeType: 'application/hwp+zip', compression: 'DEFLATE' });
-}
-
-export function downloadBlob(blob, filename) {
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = filename;
-  document.body.append(link);
-  link.click();
-  link.remove();
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
 }

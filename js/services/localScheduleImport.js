@@ -12,21 +12,14 @@ export class ScheduleDocumentImportError extends Error {
   }
 }
 
-/**
- * 일정 문서 가져오기.
- *
- * PDF  : 글자 위치로 세부 일정 표를 복원하고, 없으면 '주요 경로(➡)' 줄을 읽는다.
- * HWPX : 표를 셀 단위로 읽어 같은 규칙을 적용한다.
- */
 function extensionOf(file) {
   return String(file?.name ?? '').toLowerCase().match(/\.([^.]+)$/)?.[1] ?? '';
 }
 
+// PDF는 글자 위치로 세부 일정 표를 복원하고(없으면 '주요 경로(➡)' 줄), HWPX는 표를 셀 단위로 읽는다.
+// readPdf, readHwpx는 테스트에서 가짜로 바꿔 넣는다.
 export function createLocalScheduleImportService({ readPdf = readPdfLayout, readHwpx = readHwpxDocument } = {}) {
   return Object.freeze({
-    label: '문서 표 읽기',
-    validateFile: validateScheduleFile,
-
     async importFile(file, context = {}) {
       const validation = validateScheduleFile(file);
       if (!validation.ok) {

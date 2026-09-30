@@ -10,9 +10,6 @@ import {
   startTripScheduleAnalysisTimer
 } from '../views/project/tripScheduleSection.js';
 
-/**
- * 사업정보의 체험학습 일정 표 동작(문서 불러오기, 행 추가, 저장).
- */
 export function createTripScheduleController({
   documentImport,
   getProject,
@@ -45,13 +42,9 @@ export function createTripScheduleController({
     input.disabled = true;
     const stopTimer = startTripScheduleAnalysisTimer(input);
     try {
-      const items = await documentImport.importFile(file, {
-        projectTitle: project.title,
-        // 문서에 연도가 없으면 사업 시작일의 연도(없으면 올해)를 쓴다.
-        schoolYear: Number(String(project.startDate ?? '').slice(0, 4)) || new Date().getFullYear(),
-        startDate: project.startDate,
-        endDate: project.endDate
-      });
+      // 문서에 연도가 없으면 사업 시작일의 연도(없으면 올해)를 쓴다.
+      const schoolYear = Number(String(project.startDate ?? '').slice(0, 4)) || new Date().getFullYear();
+      const items = await documentImport.importFile(file, { schoolYear });
       stopTimer();
       if (!isCurrent()) return;
       if (!items.length) {
@@ -70,15 +63,11 @@ export function createTripScheduleController({
         if (form.elements.endDate) form.elements.endDate.value = range.endDate;
       }
       const rangeText = range ? ` 기간(${range.startDate} ~ ${range.endDate})도 입력했습니다.` : '';
-      const via = documentImport.label ? `(${documentImport.label})` : '';
-      setTripScheduleUploadStatus(input, `${items.length}개 일정을 초안으로 가져왔습니다${via}.${rangeText} 확인한 뒤 저장해 주세요.`);
+      setTripScheduleUploadStatus(input, `${items.length}개 일정을 초안으로 가져왔습니다.${rangeText} 확인한 뒤 저장해 주세요.`);
     } catch (error) {
       stopTimer();
       if (!isCurrent()) return;
-      const messageText = ['AI_NOT_CONFIGURED', 'AI_MODEL_NOT_CONFIGURED'].includes(error.code)
-        ? '문서 일정 가져오기가 설정되지 않았습니다.'
-        : error.message || '문서에서 일정을 읽지 못했습니다.';
-      setTripScheduleUploadStatus(input, messageText, { error: true });
+      setTripScheduleUploadStatus(input, error.message || '문서에서 일정을 읽지 못했습니다.', { error: true });
     } finally {
       input.value = '';
       input.disabled = false;
@@ -95,10 +84,20 @@ export function createTripScheduleController({
     markDirty();
   }
 
-  /**
-   * 일정 표를 수정 중이면(문서에서 불러온 초안 포함) 일정을 사업 데이터에 넣고 체험처/비용에 반영한다.
-   * 수정 중이 아니면 null을 돌려준다. 저장은 app.js가 페이지 전체와 함께 한다.
-   */
+  function removeRow(button) {
+    const section = button.closest('[data-trip-schedule-section]');
+    const row = button.closest('[data-trip-schedule-row]');
+    const tbody = scheduleEditBody(section);
+    if (!row || !tbody) return;
+    row.remove();
+    if (!tbody.querySelector('[data-trip-schedule-row]')) {
+      tbody.innerHTML = '<tr data-trip-schedule-empty><td colspan="7" class="center">일정이 없습니다.</td></tr>';
+    }
+    setTripScheduleEditing(section, true);
+    markDirty();
+  }
+
+  // 수정 중이 아니면 null. 저장은 app.js에서 페이지 전체와 같이 한다.
   function applyTo(form, project) {
     const section = form.querySelector('[data-trip-schedule-section]');
     if (!section || section.dataset.editing !== 'true') return null;
@@ -109,6 +108,7 @@ export function createTripScheduleController({
   return Object.freeze({
     importDocument,
     addRow,
+    removeRow,
     applyTo,
     startEditing: button => setTripScheduleEditing(button.closest('[data-trip-schedule-section]'), true)
   });

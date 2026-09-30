@@ -12,12 +12,13 @@ function scheduleRowHtml(item, tones = new Map()) {
       <td><input type="time" data-schedule-field="arrivalTime" value="${escapeHtml(item.arrivalTime)}" readonly></td>
       <td><input type="time" data-schedule-field="departureTime" value="${escapeHtml(item.departureTime)}" readonly></td>
       <td><input type="text" data-schedule-field="contact" value="${escapeHtml(item.contact)}" placeholder="연락처 등" readonly></td>
+      <td class="expense-actions"><button type="button" class="small-button danger" data-action="remove-schedule-item">삭제</button></td>
     </tr>`;
 }
 
 function scheduleRowsHtml(items) {
   if (!items.length) {
-    return '<tr data-trip-schedule-empty><td colspan="6" class="center">일정이 없습니다.</td></tr>';
+    return '<tr data-trip-schedule-empty><td colspan="7" class="center">일정이 없습니다.</td></tr>';
   }
   const tones = dayToneMap(items.map(item => item.date));
   return items.map(item => scheduleRowHtml(item, tones)).join('');
@@ -30,7 +31,6 @@ function timeText(item) {
   return '';
 }
 
-/** 저장된 일정을 날짜별로 묶어 읽기 좋게 보여 주는 표(수정하지 않을 때). */
 function scheduleViewHtml(items) {
   if (!items.length) return '<p class="schedule-empty">아직 일정이 없습니다. 일정 문서를 불러오거나 일정 항목을 추가하세요.</p>';
   const tones = dayToneMap(items.map(item => item.date));
@@ -97,7 +97,7 @@ export function renderTripScheduleSection(project) {
       <div class="table-wrap" data-trip-schedule-edit hidden>
         <table class="trip-schedule-table">
           <thead>
-            <tr><th>일자</th><th>장소</th><th>일정/체험처</th><th>도착 시간</th><th>나가는 시간</th><th>메모(비고)</th></tr>
+            <tr><th>일자</th><th>장소</th><th>일정/체험처</th><th>도착 시간</th><th>나가는 시간</th><th>메모(비고)</th><th>삭제</th></tr>
           </thead>
           <tbody>${scheduleRowsHtml(items)}</tbody>
         </table>
@@ -124,7 +124,7 @@ export function setTripScheduleEditing(section, editing) {
   }
 }
 
-/** 입력 표의 tbody. 보기 표에도 tbody가 있으므로 반드시 이 함수로 찾는다. */
+// 보기 표에도 tbody가 있어서 입력 표는 꼭 이걸로 찾는다.
 export function scheduleEditBody(section) {
   return section?.querySelector('[data-trip-schedule-edit] tbody') ?? null;
 }
@@ -133,10 +133,7 @@ export function newTripScheduleRowHtml() {
   return scheduleRowHtml(createTripScheduleItem());
 }
 
-/**
- * 표의 현재 내용을 일정 데이터로 읽는다.
- * 문서를 새로 불러와 아직 저장하지 않았다면 그 문서를 기준 정보로 쓰고, 아니면 기존 기준을 유지한다.
- */
+// 새로 불러온 문서가 있으면 그 문서를 출처로 바꾼다.
 export function readTripScheduleSection(section, previousSchedule = { items: [] }) {
   const previousItems = Array.isArray(previousSchedule?.items) ? previousSchedule.items : [];
   const previousById = new Map(previousItems.map(item => [String(item.id), item]));
@@ -175,7 +172,6 @@ export function setTripScheduleUploadStatus(input, text, { error = false } = {})
   if (error) status.classList.add('error-text');
 }
 
-/** 분석 중 경과 시간을 1초마다 표시한다. 반환한 함수를 호출하면 멈춘다. */
 export function startTripScheduleAnalysisTimer(input) {
   const startedAt = Date.now();
   const update = () => {
